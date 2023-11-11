@@ -4,7 +4,8 @@ import Link from "next/link";
 import {
     BookOpen,
     Home,
-    UploadCloud
+    UploadCloud,
+    HelpCircle
 } from "lucide-react";
 
 import quiztory from "@/assets/quiztory.png";
@@ -25,6 +26,7 @@ export default function Header() {
                 <HeaderButton Icon={Home} text="Home" router="/" />
                 <HeaderButton Icon={BookOpen} text="Course" router="/course" />
                 <HeaderButton Icon={UploadCloud} text="Upload" router="/upload" />
+                <HeaderButton Icon={HelpCircle} text="Help" router="/help" />
             </div>
             <ProfileButton />
         </aside>
