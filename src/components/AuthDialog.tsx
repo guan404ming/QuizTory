@@ -18,7 +18,7 @@ import {
 
 import useUserInfo from "@/hooks/useUserInfo";
 
-export default function NameDialog() {
+export default function AuthDialog() {
     const [dialogOpen, setDialogOpen] = useState(false);
     const router = useRouter();
     const searchParams = useSearchParams();

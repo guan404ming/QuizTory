@@ -1,4 +1,4 @@
-import NameDialog from "@/components/NameDialog";
+import AuthDialog from "@/components/AuthDialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { db } from "@/db";
 import { COURSE, FILE, USER } from "@/db/schema";
@@ -72,7 +72,7 @@ export default async function Home() {
                     </TableBody>
                 </Table>
             </div>
-            <NameDialog />
+            <AuthDialog />
         </>
     );
 }
