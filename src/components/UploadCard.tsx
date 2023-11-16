@@ -2,8 +2,16 @@
 
 import * as React from "react"
 
-import { storage } from '@/lib/storage';
-import { ref, uploadBytesResumable, getDownloadURL, type StorageError } from "firebase/storage"
+import * as z from "zod"
+import { useForm } from "react-hook-form"
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+} from "@/components/ui/form"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,7 +23,6 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
     Select,
     SelectContent,
@@ -23,9 +30,22 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useState } from "react";
+
 import useStorage from "@/hooks/useStorage";
-import { useRouter } from "next/navigation";
+
+const formSchema = z.object({
+    courseId: z.string(),
+    contentType: z.enum(['Solution', 'Question', 'Q&S']),
+    examType: z.enum(["Quiz", "Midterm", "Final"]),
+    file: z
+        .instanceof(File)
+        .refine(file => file.size < 10000000, {
+            message: "File size should be less than 10MB",
+        })
+        .refine(file => file.type === "application/pdf", {
+            message: "File type should be pdf",
+        })
+});
 
 type UploadCardProps = {
     courseData: {
@@ -36,115 +56,123 @@ type UploadCardProps = {
 export function UploadCard({
     courseData
 }: UploadCardProps) {
-
-    const [contentType, setContentType] = useState<string>('');
-    const [courseId, setCourseId] = useState<string>('');
-    const [examType, setExamType] = useState<string>('');
-    const [file, setFile] = useState<File | null>(null);
     const { createFile } = useStorage();
-    const router = useRouter();
 
-    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (files) {
-            setFile(files[0]);
-        }
-    };
+    // form
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+    });
 
-    const onUpload = () => {
-        if (file) {
-            const storageRef = ref(storage, `pdf/${file.name}`);
-            const uploadTask = uploadBytesResumable(storageRef, file);
-
-            uploadTask.on(
-                "state_changed",
-                (snapshot) => {
-                    console.log(snapshot);
-                },
-                (error: StorageError) => {
-                    console.error('Upload failed', error);
-                },
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL: string) => {
-                        console.log('File available at', downloadURL);
-                        try {
-                            createFile({
-                                courseId, 
-                                contentType, 
-                                examType, 
-                                downloadURL
-                            })
-                        } catch (error) {
-                            console.log(error);
-                        } finally {
-                            router.push('/');
-                        }
-                    });
-                }
-            );
-        }
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        createFile({...values})
     };
 
     return (
-        <Card className="w-[350px] drop-shadow-md   ">
+        <Card className="w-[350px] drop-shadow-md">
             <CardHeader>
                 <CardTitle>Upload PDF</CardTitle>
                 <CardDescription>Upload your PDF in one-click.</CardDescription>
             </CardHeader>
-            <CardContent>
-                <form>
-                    <div className="grid w-full items-center gap-4">
-                        <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="type">Course Id</Label>
-                            <Select onValueChange={(e) => setCourseId(e)}>
-                                <SelectTrigger id="type">
-                                    <SelectValue placeholder="Select" />
-                                </SelectTrigger>
-                                <SelectContent position="popper">
-                                    {
-                                        courseData.map((course) => <SelectItem key={course.id} value={course.id}>{course.id}</SelectItem>)
-                                    }
-                                </SelectContent>
-                            </Select>
-                        </div>
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                    <CardContent className="text-blue">
+                        <FormField
+                            control={form.control}
+                            name="courseId"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Course Id</FormLabel>
 
-                        <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="type">Content Type</Label>
-                            <Select onValueChange={(e) => setContentType(e)}>
-                                <SelectTrigger id="type">
-                                    <SelectValue placeholder="Select" />
-                                </SelectTrigger>
-                                <SelectContent position="popper">
-                                    <SelectItem value="Solution">Solution</SelectItem>
-                                    <SelectItem value="Question">Question</SelectItem>
-                                    <SelectItem value="Q&S">Q&S</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="type">Exam Type</Label>
-                            <Select onValueChange={(e) => setExamType(e)}>
-                                <SelectTrigger id="type">
-                                    <SelectValue placeholder="Select" />
-                                </SelectTrigger>
-                                <SelectContent position="popper">
-                                    <SelectItem value="Quiz">Quiz</SelectItem>
-                                    <SelectItem value="Midterm">Midterm</SelectItem>
-                                    <SelectItem value="Final">Final</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="File">File</Label>
-                            <Input id="file" type="file" placeholder="Name of your project" onChange={onFileChange} />
-                        </div>
-                    </div>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger id="type">
+                                                <SelectValue placeholder="Select" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent position="popper">
+                                            {
+                                                courseData.map((course) => <SelectItem key={course.id} value={course.id}>{course.id}</SelectItem>)
+                                            }
+                                        </SelectContent>
+                                    </Select>
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="contentType"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Content Type</FormLabel>
+
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger id="type">
+                                                <SelectValue placeholder="Select" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent position="popper">
+                                            <SelectItem value="Solution">Solution</SelectItem>
+                                            <SelectItem value="Question">Question</SelectItem>
+                                            <SelectItem value="Q&S">Q&S</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="examType"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Exam Type</FormLabel>
+
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger id="type">
+                                                <SelectValue placeholder="Select" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent position="popper">
+                                            <SelectItem value="Quiz">Quiz</SelectItem>
+                                            <SelectItem value="Midterm">Midterm</SelectItem>
+                                            <SelectItem value="Final">Final</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="file"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>File</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="file"
+                                            accept=".pdf"
+                                            onChange={(e) => {
+                                                if (e.target.files) {
+                                                    field.onChange(e.target.files[0]);
+                                                }
+                                            }}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+
+                    </CardContent>
+                    <CardFooter className="flex justify-between">
+                        <Button variant="outline">Cancel</Button>
+                        <Button type="submit">Upload</Button>
+                    </CardFooter>
                 </form>
-            </CardContent>
-            <CardFooter className="flex justify-between">
-                <Button variant="outline">Cancel</Button>
-                <Button onClick={onUpload}>Upload</Button>
-            </CardFooter>
+            </Form>
         </Card>
     )
 }

@@ -9,9 +9,9 @@ import { eq } from "drizzle-orm";
 
 const uploadFileRequestSchema = z.object({
     courseId: z.string(),
-    contentType: z.string(),
-    examType: z.string(),
-    downloadURL: z.string()
+    contentType: z.enum(['Solution', 'Question', 'Q&S']),
+    examType: z.enum(["Quiz", "Midterm", "Final"]),
+    downloadURL: z.string().url()
 });
 
 type UploadFileRequest = z.infer<typeof uploadFileRequestSchema>;
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
 
-    const { courseId, downloadURL } = data as UploadFileRequest;
+    const { courseId, contentType, examType, downloadURL } = data as UploadFileRequest;
 
     try {
         const session = await getServerSession(authOptions);
@@ -44,8 +44,8 @@ export async function POST(request: NextRequest) {
           .values({
             user_id: user.id,
             course_id: courseId,
-            content_type: 'Q&S',
-            exam_type: 'Midterm',
+            content_type: contentType,
+            exam_type: examType,
             downloadURL,
             status: 'Private'
           })
