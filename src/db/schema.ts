@@ -3,7 +3,6 @@ import {
     integer,
     pgTable,
     serial,
-    smallint,
     varchar,
 } from "drizzle-orm/pg-core";
 
@@ -31,7 +30,7 @@ export const USER_ROLE = pgTable("USER_ROLE",
 export const INSTRUCTOR = pgTable("INSTRUCTOR",
     {
         id: serial("id").primaryKey(),
-        name: varchar("name").notNull(),
+        name: varchar("name").notNull().unique(),
         department_name: varchar("department_name", { length: 20 }).notNull(),
     },
     (table) => ({
@@ -43,14 +42,13 @@ export const COURSE = pgTable("COURSE",
     {
         id: varchar("id").notNull().primaryKey(),
         name: varchar("name").notNull(),
-        year: smallint("year").notNull(),
-        semester: integer("semester").notNull(),
+        semester: varchar("semester", { length: 50 }).notNull(),
         instructor_id: integer("instructor_id")
             .notNull()
             .references(() => INSTRUCTOR.id, { onDelete: "cascade" }),
     },
     (table) => ({
-        yearIndex: index("year").on(table.year),
+        semesterIndex: index("semester").on(table.semester),
     }),
 );
 
@@ -69,7 +67,4 @@ export const FILE = pgTable("FILE",
             .notNull()
             .references(() => USER.id, { onDelete: "cascade" }),
     },
-    // (table) => ({
-    //     yearIndex: index("year").on(table.year),
-    // }),
 );

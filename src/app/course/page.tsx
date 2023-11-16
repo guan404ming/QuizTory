@@ -20,7 +20,6 @@ export default async function CoursePage() {
     const courseData = await db
         .select({
             id: COURSE.id,
-            year: COURSE.year,
             semester: COURSE.semester,
             name: COURSE.name,
             instructor_id: COURSE.instructor_id,
@@ -50,7 +49,7 @@ export default async function CoursePage() {
                         courseData.map((course) => (
                             <TableRow key={course.id}>
                                 <TableCell className="font-medium">{course.name}</TableCell>
-                                <TableCell>{`${course.year} - ${course.semester}`}</TableCell>
+                                <TableCell>{`${course.semester}`}</TableCell>
                                 <TableCell>{`${course.instructor_name}`}</TableCell>
                             </TableRow>
                         ))
