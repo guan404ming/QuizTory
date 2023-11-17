@@ -5,7 +5,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 
-export function AccordionDemo() {
+function AccordionDemo() {
     return (
         <Accordion type="single" collapsible className="py-4 bg-white px-4 text-m">
             <AccordionItem value="item-1">
