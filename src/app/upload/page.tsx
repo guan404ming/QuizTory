@@ -1,6 +1,6 @@
 import { UploadCard } from "@/components/UploadCard";
 import { db } from "@/db";
-import { COURSE } from "@/db/schema";
+import { courseTable } from "@/db/schema";
 import { redirect } from "next/navigation";
 
 // type CoursePageProps = {};
@@ -8,8 +8,8 @@ import { redirect } from "next/navigation";
 export default async function CoursePage() {
 
     const courseData = await db
-        .select({ id: COURSE.id })
-        .from(COURSE)
+        .select()
+        .from(courseTable)
         .execute();
 
     if (!courseData) {

@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { FILE, USER } from "@/db/schema";
+import { fileTable, userTable } from "@/db/schema";
 import { NextResponse, type NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
 
@@ -8,7 +8,7 @@ import { authOptions } from "@/lib/auth";
 import { eq } from "drizzle-orm";
 
 const uploadFileRequestSchema = z.object({
-    courseId: z.string(),
+    courseId: z.number(),
     contentType: z.enum(['Solution', 'Question', 'Q&S']),
     examType: z.enum(["Quiz", "Midterm", "Final"]),
     downloadURL: z.string().url()
@@ -34,20 +34,20 @@ export async function POST(request: NextRequest) {
         
         const [user] = await db
             .select({
-                id: USER.id
+                id: userTable.id
             })
-            .from(USER)
-            .where(eq(USER.email, session.user.email));
+            .from(userTable)
+            .where(eq(userTable.email, session.user.email));
 
         await db
-          .insert(FILE)
+          .insert(fileTable)
           .values({
-            user_id: user.id,
-            course_id: courseId,
-            content_type: contentType,
-            exam_type: examType,
+            contentType,
+            examType,
+            status: 'Private',
             downloadURL,
-            status: 'Private'
+            courseId,
+            userId: user.id
           })
           .onConflictDoNothing()
           .execute();

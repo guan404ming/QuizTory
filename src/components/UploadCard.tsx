@@ -49,7 +49,11 @@ const formSchema = z.object({
 
 type UploadCardProps = {
     courseData: {
-        id: string
+        number: string;
+        name: string;
+        id: number;
+        semester: string;
+        instructorId: number;
     }[]
 };
 
@@ -64,7 +68,7 @@ export function UploadCard({
     });
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        createFile({...values})
+        createFile({ ...values, courseId: parseInt(values.courseId) })
     };
 
     return (
@@ -83,7 +87,7 @@ export function UploadCard({
                                 <FormItem>
                                     <FormLabel>Course Id</FormLabel>
 
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={field.onChange}>
                                         <FormControl>
                                             <SelectTrigger id="type">
                                                 <SelectValue placeholder="Select" />
@@ -91,7 +95,11 @@ export function UploadCard({
                                         </FormControl>
                                         <SelectContent position="popper">
                                             {
-                                                courseData.map((course) => <SelectItem key={course.id} value={course.id}>{course.id}</SelectItem>)
+                                                courseData.map((course) =>
+                                                    <SelectItem key={course.id} value={`${course.id}`}>
+                                                        {`${course.number}`}
+                                                    </SelectItem>
+                                                )
                                             }
                                         </SelectContent>
                                     </Select>

@@ -15,7 +15,7 @@ export default function useStorage() {
         examType,
         file
     }: {
-        courseId: string,
+        courseId: number,
         contentType: 'Solution' | 'Question' | 'Q&S',
         examType: "Quiz" | "Midterm" | "Final",
         file: File

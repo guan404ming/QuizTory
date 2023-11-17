@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table"
 
 import { db } from "@/db";
-import { COURSE, INSTRUCTOR } from "@/db/schema";
+import { courseTable, instructorTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 // type CoursePageProps = {};
@@ -19,14 +19,14 @@ export default async function CoursePage() {
 
     const courseData = await db
         .select({
-            id: COURSE.id,
-            semester: COURSE.semester,
-            name: COURSE.name,
-            instructor_id: COURSE.instructor_id,
-            instructor_name: INSTRUCTOR.name,
+            id: courseTable.id,
+            semester: courseTable.semester,
+            name: courseTable.name,
+            instructor_id: courseTable.instructorId,
+            instructor_name: instructorTable.name,
         })
-        .from(COURSE)
-        .innerJoin(INSTRUCTOR, eq(COURSE.instructor_id, INSTRUCTOR.id))
+        .from(courseTable)
+        .innerJoin(instructorTable, eq(courseTable.instructorId, instructorTable.id))
         .execute();
 
     if (!courseData) {

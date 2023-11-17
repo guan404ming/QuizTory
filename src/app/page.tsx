@@ -1,7 +1,7 @@
 import AuthDialog from "@/components/AuthDialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { db } from "@/db";
-import { COURSE, FILE, USER } from "@/db/schema";
+import { courseTable, fileTable, userTable } from "@/db/schema";
 import { authOptions } from "@/lib/auth";
 import { eq } from "drizzle-orm";
 import { getServerSession } from "next-auth";
@@ -14,14 +14,14 @@ export default async function Home() {
 
     if (session?.user) {
         await db
-            .insert(USER)
+            .insert(userTable)
             .values({
                 name: session.user.name as string,
                 email: session.user.email as string,
             })
 
             .onConflictDoUpdate({
-                target: USER.email,
+                target: userTable.email,
                 set: {
                     name: session.user.name as string,
                 },
@@ -31,13 +31,13 @@ export default async function Home() {
 
     const fileData = await db
         .select({
-            id: FILE.id,
-            contentType: FILE.content_type,
-            courseName: COURSE.name,
-            downloadURL: FILE.downloadURL
+            id: fileTable.id,
+            contentType: fileTable.contentType,
+            courseName: courseTable.name,
+            downloadURL: fileTable.downloadURL
         })
-        .from(FILE)
-        .innerJoin(COURSE, eq(FILE.course_id, COURSE.id))
+        .from(fileTable)
+        .innerJoin(courseTable, eq(fileTable.courseId, courseTable.id))
         .execute();
 
     if (!fileData) {
