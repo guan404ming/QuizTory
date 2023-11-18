@@ -3,6 +3,7 @@ import {
     integer,
     pgTable,
     serial,
+    unique,
     varchar,
 } from "drizzle-orm/pg-core";
 
@@ -50,6 +51,7 @@ export const courseTable = pgTable("COURSE",
     },
     (table) => ({
         numberIndex: index("number").on(table.number),
+        unique: unique().on(table.number, table.instructorId)
     }),
 );
 
