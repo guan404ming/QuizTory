@@ -21,4 +21,3 @@ function getSeed(username: string) {
     0,
   );
 }
-

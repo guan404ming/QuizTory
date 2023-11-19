@@ -9,7 +9,7 @@ const firebaseConfig = {
   projectId: "quiztory-f5e09",
   storageBucket: "quiztory-f5e09.appspot.com",
   messagingSenderId: "237993415808",
-  appId: "1:237993415808:web:20f6c0ea9695ab591cc265"
+  appId: "1:237993415808:web:20f6c0ea9695ab591cc265",
 };
 
 // Initialize Firebase
