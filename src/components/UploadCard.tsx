@@ -10,6 +10,7 @@ import {
     FormField,
     FormItem,
     FormLabel,
+    FormMessage,
 } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
@@ -30,8 +31,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { Command, CommandInput, CommandEmpty, CommandItem, CommandList } from "@/components/ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 import useStorage from "@/hooks/useStorage";
+import { cn } from "@/lib/utils"
+import { ChevronsUpDown } from "lucide-react"
 
 const formSchema = z.object({
     courseId: z.string(),
@@ -80,29 +85,59 @@ export function UploadCard({
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}>
                     <CardContent className="text-blue">
+
                         <FormField
                             control={form.control}
                             name="courseId"
                             render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Course Id</FormLabel>
-
-                                    <Select onValueChange={field.onChange}>
-                                        <FormControl>
-                                            <SelectTrigger id="type">
-                                                <SelectValue placeholder="Select" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent position="popper">
-                                            {
-                                                courseData.map((course) =>
-                                                    <SelectItem key={course.id} value={`${course.id}`}>
-                                                        {`${course.number}`}
-                                                    </SelectItem>
-                                                )
-                                            }
-                                        </SelectContent>
-                                    </Select>
+                                <FormItem className="flex flex-col">
+                                    <FormLabel>Course Number</FormLabel>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <FormControl>
+                                                <Button
+                                                    variant="outline"
+                                                    role="combobox"
+                                                    className={cn(
+                                                        "justify-between",
+                                                        !field.value && "text-muted-foreground"
+                                                    )}
+                                                >
+                                                    {
+                                                        (field.value)
+                                                        ? `${courseData.find(
+                                                            (course) => `${course.id}` === field.value
+                                                        )?.number} - ${courseData.find(
+                                                            (course) => `${course.id}` === field.value
+                                                        )?.name}`
+                                                        : "Select course"
+                                                    }
+                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                </Button>
+                                            </FormControl>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="p-0">
+                                            <Command>
+                                                <CommandInput placeholder="Search course..." />
+                                                <CommandEmpty>No course found.</CommandEmpty>
+                                                <CommandList>
+                                                    {courseData.map((course) => (
+                                                        <CommandItem
+                                                            className="py-2 px-4"
+                                                            value={JSON.stringify(course)}
+                                                            key={`${course.id}`}
+                                                            onSelect={() => {
+                                                                form.setValue("courseId", `${course.id}`);
+                                                            }}
+                                                        >
+                                                            {`${course.number} - ${course.name}`}
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandList>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
@@ -126,6 +161,8 @@ export function UploadCard({
                                             <SelectItem value="Q&S">Q&S</SelectItem>
                                         </SelectContent>
                                     </Select>
+
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
@@ -149,6 +186,8 @@ export function UploadCard({
                                             <SelectItem value="Final">Final</SelectItem>
                                         </SelectContent>
                                     </Select>
+
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
