@@ -4,9 +4,7 @@ import { UploadCard } from "@/components/UploadCard";
 import { db } from "@/db";
 import { courseTable } from "@/db/schema";
 
-// type CoursePageProps = {};
-
-export default async function CoursePage() {
+export default async function UploadPage() {
   const courseData = await db.select().from(courseTable).execute();
 
   if (!courseData) {

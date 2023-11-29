@@ -5,40 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-function AccordionDemo() {
-  return (
-    <Accordion type="single" collapsible className="text-m bg-white px-4 py-4">
-      <AccordionItem value="item-1">
-        <AccordionTrigger>How to upload files?</AccordionTrigger>
-        <AccordionContent>
-          If you would like to provide exam or solution files, you can click
-          "Upload" in the bar.
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-2">
-        <AccordionTrigger>How to download files?</AccordionTrigger>
-        <AccordionContent>
-          If you would like to download exam or solution files, you can click
-          "Course" in the bar and then search the particular course to download
-          files.
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-3">
-        <AccordionTrigger>Why do files I uploaded fail?</AccordionTrigger>
-        <AccordionContent>
-          The reasons why files you upload do not eventually appear on the
-          website can vary depending on the case. Some common reasons include
-          incorrect formats, errors or ambiguity in file content, input errors
-          in course names or commencement years, or the presence of relevant
-          files for the course in that particular year. If you still have any
-          problem, please feel free to contact us.
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  );
-}
-
-export default async function Help() {
+export default async function HelpPage() {
   return (
     <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll bg-white px-4 py-4 pt-2">
       <h1 className="bg-white px-4 py-4 text-xl font-bold">Help</h1>
@@ -52,11 +19,42 @@ export default async function Help() {
       </p>
 
       <div className="bg-white px-4">
-        <h2 className="font-heading text-l mt-12 scroll-m-20 border-b-2 pt-4 font-semibold tracking-tight first:mt-0">
+        <h2 className="font-heading text-l mt-12 scroll-m-20 border-b-2 py-4 font-semibold tracking-tight first:mt-0">
           FAQ
         </h2>
       </div>
-      <AccordionDemo />
+      <Accordion
+        type="single"
+        collapsible
+        className="text-m bg-white px-4 py-4"
+      >
+        <AccordionItem value="item-1">
+          <AccordionTrigger>How to upload files?</AccordionTrigger>
+          <AccordionContent>
+            If you would like to provide exam or solution files, you can click
+            "Upload" in the bar.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-2">
+          <AccordionTrigger>How to download files?</AccordionTrigger>
+          <AccordionContent>
+            If you would like to download exam or solution files, you can click
+            "Course" in the bar and then search the particular course to
+            download files.
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="item-3">
+          <AccordionTrigger>Why do files I uploaded fail?</AccordionTrigger>
+          <AccordionContent>
+            The reasons why files you upload do not eventually appear on the
+            website can vary depending on the case. Some common reasons include
+            incorrect formats, errors or ambiguity in file content, input errors
+            in course names or commencement years, or the presence of relevant
+            files for the course in that particular year. If you still have any
+            problem, please feel free to contact us.
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </div>
   );
 }
