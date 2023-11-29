@@ -72,15 +72,15 @@ type UploadCardProps = {
 };
 
 export function UploadCard({ courseData }: UploadCardProps) {
-  const { createFile } = useStorage();
+  const { loading, createFile } = useStorage();
 
   // form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    createFile({ ...values, courseId: parseInt(values.courseId) });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await createFile({ ...values, courseId: parseInt(values.courseId) });
   }
 
   return (
@@ -224,8 +224,12 @@ export function UploadCard({ courseData }: UploadCardProps) {
             />
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button variant="outline">Cancel</Button>
-            <Button type="submit">Upload</Button>
+            <Button variant="outline" disabled={loading}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={loading}>
+              Upload
+            </Button>
           </CardFooter>
         </form>
       </Form>

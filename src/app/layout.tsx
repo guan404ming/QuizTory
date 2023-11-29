@@ -3,6 +3,7 @@ import { Noto_Sans } from "next/font/google";
 
 import Header from "@/components/Header";
 import { Separator } from "@/components/ui/separator";
+import { Toaster } from "@/components/ui/toaster";
 import NextAuthProvider from "@/context/NextAuthProvider";
 
 import "./globals.css";
@@ -37,6 +38,7 @@ export default function RootLayout({
               <Separator orientation="vertical" />
             </main>
           </div>
+          <Toaster />
         </body>
       </NextAuthProvider>
     </html>

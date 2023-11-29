@@ -9,10 +9,12 @@ import {
   type StorageError,
 } from "firebase/storage";
 
+import { useToast } from "@/components/ui/use-toast";
 import { storage } from "@/lib/storage";
 
 export default function useStorage() {
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
   const router = useRouter();
 
   const createFile = async ({
@@ -64,6 +66,10 @@ export default function useStorage() {
 
               router.refresh();
               router.push("/");
+              toast({
+                title: "Successfully uploaded!",
+                description: "Wait admin to approve it~",
+              });
               setLoading(false);
             } catch (error) {
               console.log(error);
