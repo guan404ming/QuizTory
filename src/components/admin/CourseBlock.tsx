@@ -20,11 +20,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import useCourse from "@/hooks/useCourse";
+import useAdmin from "@/hooks/useAdmin";
 
 export default function CourseBlock() {
   const [file, setFile] = useState<File | null>(null);
-  const { createCourse } = useCourse();
+  const { createCourse } = useAdmin();
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {

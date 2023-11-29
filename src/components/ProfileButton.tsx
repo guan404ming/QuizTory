@@ -17,9 +17,11 @@ export default function ProfileButton() {
       onClick={() => router.push("/?open=true")}
     >
       <UserAvatar />
-      <div className="w-40 max-lg:hidden px-2">
-        <p className="text-sm font-bold truncate">{session?.user?.name ?? "..."}</p>
-        <p className="text-sm text-gray-500 truncate">{`${session?.user?.email}`}</p>
+      <div className="w-40 px-2 max-lg:hidden">
+        <p className="truncate text-sm font-bold">
+          {session?.user?.name ?? "..."}
+        </p>
+        <p className="truncate text-sm text-gray-500">{`${session?.user?.email}`}</p>
       </div>
       <MoreHorizontal size={24} className="max-lg:hidden" />
     </button>

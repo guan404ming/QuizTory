@@ -166,8 +166,8 @@ export const announcementTable = pgTable(
     content: varchar("announcement_content", {
       length: 200,
     }).notNull(),
-    date: date("announcement_date").notNull(),
-    time: time("announcement_time").notNull(),
+    date: date("announcement_date").defaultNow(),
+    time: time("announcement_time").defaultNow(),
   },
   (table) => ({
     userIdIndex: index("user_id_index").on(table.userId),

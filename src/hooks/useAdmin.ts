@@ -36,7 +36,29 @@ export default function useStorage() {
     setLoading(false);
   };
 
+  const createAnnouncement = async ({ content }: { content: string }) => {
+    if (loading) return;
+
+    setLoading(true);
+
+    const res = await fetch("/api/announcement", {
+      method: "POST",
+      body: JSON.stringify({ content }),
+    });
+
+    console.log(res);
+    router.push("/");
+    router.refresh();
+
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.error);
+    }
+    setLoading(false);
+  };
+
   return {
+    createAnnouncement,
     createCourse,
     loading,
   };
