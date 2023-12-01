@@ -40,6 +40,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import useAdmin from "@/hooks/useAdmin";
 
 type FileBlockProps = {
   fileData: {
@@ -57,18 +58,21 @@ export default function FileBlock({ fileData }: FileBlockProps) {
   const [open, setOpen] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<string>("");
   const [status, setStatus] = useState<"Public" | "Private">("Private");
+  const { setFileStatus } = useAdmin();
 
   function getLabelById() {
     const file = fileData.find((file) => `${file.id}` === selectedFileId);
     if (file) {
-        return `${file.courseId} - ${file.examType} - ${file.contentType} - (user-${file.userId})`
+      return `${file.courseId} - ${file.examType} - ${file.contentType} - (user-${file.userId})`;
     } else {
-        return "File not found!"
+      return "File not found!";
     }
   }
 
   const handleSubmit = () => {
-    console.log(selectedFileId, status);
+    const file = fileData.find((file) => `${file.id}` === selectedFileId);
+    if (!file) return;
+    setFileStatus({ fileId: file.id, status });
   };
 
   return (
@@ -99,9 +103,7 @@ export default function FileBlock({ fileData }: FileBlockProps) {
                 aria-expanded={open}
                 className="justify-between"
               >
-                {selectedFileId
-                  ? getLabelById()
-                  : "Select framework..."}
+                {selectedFileId ? getLabelById() : "Select file..."}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
@@ -118,7 +120,9 @@ export default function FileBlock({ fileData }: FileBlockProps) {
                     className="px-4"
                     value={JSON.stringify(file)}
                     onSelect={(currentValue) => {
-                      setSelectedFileId(currentValue === selectedFileId ? "" : `${file.id}`);
+                      setSelectedFileId(
+                        currentValue === selectedFileId ? "" : `${file.id}`,
+                      );
                       setStatus(file.status);
                       setOpen(false);
                     }}

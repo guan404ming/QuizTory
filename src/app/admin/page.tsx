@@ -13,9 +13,7 @@ import { db } from "@/db";
 import { fileTable } from "@/db/schema";
 
 export default async function AdminPage() {
-  const fileData = await db
-    .select()
-    .from(fileTable)
+  const fileData = await db.select().from(fileTable);
 
   return (
     <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
