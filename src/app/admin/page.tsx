@@ -2,18 +2,13 @@
 import AnnouncementBlock from "@/components/admin/AnnouncementBlock";
 import CourseBlock from "@/components/admin/CourseBlock";
 import FileBlock from "@/components/admin/FileBlock";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import RoleBlock from "@/components/admin/RoleBlock";
 import { db } from "@/db";
-import { fileTable } from "@/db/schema";
+import { fileTable, userTable } from "@/db/schema";
 
 export default async function AdminPage() {
   const fileData = await db.select().from(fileTable);
+  const userData = await db.select().from(userTable);
 
   return (
     <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
@@ -22,14 +17,7 @@ export default async function AdminPage() {
         <AnnouncementBlock />
         <CourseBlock />
         <FileBlock fileData={fileData} />
-
-        <Card className="cursor-pointer">
-          <CardHeader>
-            <CardTitle>Roles</CardTitle>
-            <CardDescription>Change user roles</CardDescription>
-          </CardHeader>
-          <CardContent></CardContent>
-        </Card>
+        <RoleBlock userData={userData} />
       </div>
     </div>
   );
