@@ -40,6 +40,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import useAdmin from "@/hooks/useAdmin";
 
 type RoleBlockProps = {
   userData: {
@@ -53,17 +54,21 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string>("");
   const [role, setRole] = useState<"Admin" | "Blocked" | "Normal">("Normal");
+  const { setUserRole } = useAdmin();
 
   function getLabelById() {
-    const file = userData.find((user) => `${user.id}` === selectedUserId);
-    if (file) {
-      return `${file.name} - ${file.email}`;
+    const changee = userData.find((user) => `${user.id}` === selectedUserId);
+    if (changee) {
+      return `${changee.name} - ${changee.email}`;
     } else {
       return "User not found!";
     }
   }
 
   const handleSubmit = () => {
+    const changee = userData.find((user) => `${user.id}` === selectedUserId);
+    if (!changee) return;
+    setUserRole({ changeeId: changee.id, role });
     console.log(role, selectedUserId);
   };
 
@@ -85,7 +90,7 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
         </DialogHeader>
 
         <div className="flex flex-col">
-          <p className="my-4 font-bold">File</p>
+          <p className="my-4 font-bold">User</p>
 
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -95,7 +100,7 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
                 aria-expanded={open}
                 className="justify-between"
               >
-                {selectedUserId ? getLabelById() : "Select file..."}
+                {selectedUserId ? getLabelById() : "Select user..."}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
@@ -104,28 +109,28 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
               align="start"
             >
               <Command>
-                <CommandInput placeholder="Search file..." />
-                <CommandEmpty>No file found.</CommandEmpty>
-                {userData.map((file) => (
+                <CommandInput placeholder="Search user..." />
+                <CommandEmpty>No user found.</CommandEmpty>
+                {userData.map((user) => (
                   <CommandItem
-                    key={file.id}
+                    key={user.id}
                     className="px-4"
-                    value={JSON.stringify(file)}
+                    value={JSON.stringify(user)}
                     onSelect={(currentValue) => {
                       setSelectedUserId(
-                        currentValue === selectedUserId ? "" : `${file.id}`,
+                        currentValue === selectedUserId ? "" : `${user.id}`,
                       );
                       setOpen(false);
                     }}
                   >
-                    {`${file.name} - ${file.email}`}
+                    {`${user.name} - ${user.email}`}
                   </CommandItem>
                 ))}
               </Command>
             </PopoverContent>
           </Popover>
 
-          <p className="my-4 font-bold">Status</p>
+          <p className="my-4 font-bold">Role</p>
 
           <Select
             defaultValue="Normal"

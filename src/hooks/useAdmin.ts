@@ -84,9 +84,36 @@ export default function useStorage() {
     setLoading(false);
   };
 
+  const setUserRole = async ({
+    changeeId,
+    role,
+  }: {
+    changeeId: number;
+    role: "Admin" | "Blocked" | "Normal";
+  }) => {
+    if (loading) return;
+
+    setLoading(true);
+
+    const res = await fetch("/api/admin/user", {
+      method: "POST",
+      body: JSON.stringify({ changeeId, role }),
+    });
+
+    console.log(res);
+    router.refresh();
+
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.error);
+    }
+    setLoading(false);
+  };
+
   return {
     createAnnouncement,
     setFileStatus,
+    setUserRole,
     createCourse,
     loading,
   };
