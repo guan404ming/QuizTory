@@ -23,7 +23,7 @@ export const userTable = pgTable(
 
 export const userRoleTable = pgTable("USER_ROLE", {
   id: serial("id").primaryKey(),
-  role: varchar("role", { enum: ["Admin", "Blocked"] }).notNull(),
+  role: varchar("role", { enum: ["Admin", "Blocked", "Normal"] }).notNull(),
   userId: integer("user_id")
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
@@ -135,12 +135,13 @@ export const roleChangedRecord = pgTable(
   "ROLE_CHANGED_RECORD",
   {
     id: serial("changed_record_id").primaryKey(),
-    changed_role: varchar("changed_role", {
+    from: varchar("changed_role", {
       enum: ["Admin", "Blocked"],
     }).notNull(),
-    changer_action: varchar("changer_action", {
-      enum: ["Assigned", "Cancelled"],
+    to: varchar("changed_role", {
+      enum: ["Admin", "Blocked"],
     }).notNull(),
+
     date: date("changed_date").notNull(),
     time: time("changed_time").notNull(),
     changerId: serial("changer_id")

@@ -20,6 +20,7 @@ import {
   announcementTable,
   courseTable,
   fileTable,
+  userRoleTable,
   userTable,
 } from "@/db/schema";
 import { authOptions } from "@/lib/auth";
@@ -28,7 +29,7 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
 
   if (session?.user) {
-    await db
+    const [user] = await db
       .insert(userTable)
       .values({
         name: session.user.name as string,
@@ -41,6 +42,16 @@ export default async function Home() {
           name: session.user.name as string,
         },
       })
+      .returning()
+      .execute();
+
+    await db
+      .insert(userRoleTable)
+      .values({
+        role: "Normal",
+        userId: user.id,
+      })
+      .onConflictDoNothing()
       .execute();
   }
 
