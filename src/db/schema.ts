@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import {
   index,
   integer,
@@ -5,8 +6,7 @@ import {
   serial,
   varchar,
   unique,
-  date,
-  time,
+  timestamp,
 } from "drizzle-orm/pg-core";
 
 // user related
@@ -37,8 +37,7 @@ export const commentTable = pgTable(
   {
     id: serial("comment_id").primaryKey(),
     content: varchar("comment_content", { length: 200 }).notNull(),
-    date: date("comment_date").notNull(),
-    time: time("comment_time").notNull(),
+    createdAt: timestamp("created_at").default(sql`now()`),
     userId: serial("user_id")
       .notNull()
       .references(() => userTable.id, { onDelete: "cascade" }),
@@ -61,8 +60,7 @@ export const settingTable = pgTable(
     type: varchar("setting_type", {
       enum: ["Set_public", "Set_private"],
     }).notNull(),
-    date: date("setting_date").notNull(),
-    time: time("setting_time").notNull(),
+    createdAt: timestamp("created_at").default(sql`now()`),
     userId: serial("user_id")
       .notNull()
       .references(() => userTable.id, { onDelete: "cascade" }),
@@ -77,8 +75,7 @@ export const activityRecordTable = pgTable(
   {
     id: serial("activity_id").primaryKey(),
     type: varchar("activity_type", { length: 20 }).notNull(),
-    date: date("activity_date").notNull(),
-    time: time("activity_time").notNull(),
+    createdAt: timestamp("created_at").default(sql`now()`),
     user_id: serial("user_id")
       .notNull()
       .references(() => userTable.id, { onDelete: "cascade" }),
@@ -98,8 +95,7 @@ export const announcementTable = pgTable(
     content: varchar("announcement_content", {
       length: 200,
     }).notNull(),
-    date: date("announcement_date").defaultNow(),
-    time: time("announcement_time").defaultNow(),
+    createdAt: timestamp("created_at").default(sql`now()`),
   },
   (table) => ({
     userIdIndex: index("user_id_index").on(table.userId),
@@ -117,8 +113,7 @@ export const roleChangedRecordTable = pgTable(
       enum: ["Admin", "Blocked", "Normal"],
     }).notNull(),
 
-    date: date("changed_date").notNull(),
-    time: time("changed_time").notNull(),
+    createdAt: timestamp("created_at").default(sql`now()`),
     changerId: serial("changer_id")
       .notNull()
       .references(() => userTable.id, { onDelete: "cascade" }),

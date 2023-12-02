@@ -44,10 +44,6 @@ export async function POST(request: NextRequest) {
       .values({
         userId: user.id,
         content,
-        date: `${new Date().getFullYear()}-${
-          new Date().getMonth() + 1
-        }-${new Date().getDate()}`,
-        time: `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
       })
       .onConflictDoNothing()
       .execute();

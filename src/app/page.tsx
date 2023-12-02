@@ -6,6 +6,7 @@ import { desc, eq } from "drizzle-orm";
 import { User } from "lucide-react";
 
 import AuthDialog from "@/components/AuthDialog";
+import TimeText from "@/components/Timetext";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import {
   Table,
@@ -72,11 +73,12 @@ export default async function Home() {
     .select({
       id: announcementTable.id,
       content: announcementTable.content,
+      createdAt: announcementTable.createdAt,
       username: userTable.name,
     })
     .from(announcementTable)
     .innerJoin(userTable, eq(announcementTable.userId, userTable.id))
-    .orderBy(desc(announcementTable.date), desc(announcementTable.time))
+    .orderBy(desc(announcementTable.createdAt))
     .limit(3)
     .execute();
 
@@ -98,6 +100,10 @@ export default async function Home() {
               <AlertTitle className="ml-2">{announcement.content}</AlertTitle>
               <AlertDescription className="ml-2 text-gray-500">
                 @ {announcement.username}
+                <TimeText
+                  date={announcement.createdAt}
+                  format=" · MM/DD h:mm A"
+                />
               </AlertDescription>
             </Alert>
           ))}

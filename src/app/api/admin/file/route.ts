@@ -45,10 +45,6 @@ export async function POST(request: NextRequest) {
       .values({
         userId: user.id,
         type: status === "Private" ? "Set_private" : "Set_public",
-        date: `${new Date().getFullYear()}-${
-          new Date().getMonth() + 1
-        }-${new Date().getDate()}`,
-        time: `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
       })
       .execute();
   } catch (error) {

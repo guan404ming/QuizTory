@@ -61,10 +61,6 @@ export async function POST(request: NextRequest) {
         to: role,
         changeeId: changeeId,
         changerId: changer.id,
-        date: `${new Date().getFullYear()}-${
-          new Date().getMonth() + 1
-        }-${new Date().getDate()}`,
-        time: `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
       })
       .execute();
   } catch (error) {
