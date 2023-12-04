@@ -40,6 +40,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { toast } from "@/components/ui/use-toast";
 import useAdmin from "@/hooks/useAdmin";
 
 type RoleBlockProps = {
@@ -65,11 +66,21 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const changee = userData.find((user) => `${user.id}` === selectedUserId);
     if (!changee) return;
-    setUserRole({ changeeId: changee.id, role });
-    console.log(role, selectedUserId);
+    try {
+      await setUserRole({ changeeId: changee.id, role });
+      toast({
+        title: `Successfully set ${changee.id} to ${role}!`,
+      });
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Something went wrong 😿",
+        description: `Error setting user role`,
+      });
+    }
   };
 
   return (

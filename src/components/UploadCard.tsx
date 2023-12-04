@@ -44,6 +44,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "@/components/ui/use-toast";
 import useStorage from "@/hooks/useStorage";
 import { cn } from "@/lib/utils";
 
@@ -80,7 +81,19 @@ export function UploadCard({ courseData }: UploadCardProps) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await createFile({ ...values, courseId: parseInt(values.courseId) });
+    try {
+      await createFile({ ...values, courseId: parseInt(values.courseId) });
+      toast({
+        title: "Successfully uploaded 😻",
+        description: "Wait admin to approve it~",
+      });
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Something went wrong 😿",
+        description: `Error uploading file`,
+      });
+    }
   }
 
   return (

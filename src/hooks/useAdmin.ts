@@ -27,12 +27,13 @@ export default function useStorage() {
     });
 
     console.log(res);
-    router.push("/course");
 
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.error);
     }
+
+    router.push("/course");
     setLoading(false);
   };
 
@@ -47,13 +48,14 @@ export default function useStorage() {
     });
 
     console.log(res);
-    router.push("/");
-    router.refresh();
 
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.error);
     }
+
+    router.push("/");
+    router.refresh();
     setLoading(false);
   };
 
@@ -74,13 +76,15 @@ export default function useStorage() {
     });
 
     console.log(res);
-    router.push("/");
-    router.refresh();
 
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.error);
     }
+
+    router.push("/");
+    router.refresh();
+
     setLoading(false);
   };
 
@@ -101,12 +105,13 @@ export default function useStorage() {
     });
 
     console.log(res);
-    router.refresh();
 
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.error);
     }
+
+    router.refresh();
     setLoading(false);
   };
 

@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
 import useAdmin from "@/hooks/useAdmin";
 
 export default function AnnouncementBlock() {
@@ -28,7 +29,19 @@ export default function AnnouncementBlock() {
 
   const handleSubmit = async () => {
     if (content) {
-      await createAnnouncement({ content });
+      try {
+        await createAnnouncement({ content });
+        toast({
+          title: "Successfully created announcement 😻",
+          description: "See it in the homepage",
+        });
+      } catch (error) {
+        console.log(error);
+        toast({
+          title: "Something went wrong 😿",
+          description: `Error creating announcement`,
+        });
+      }
     }
   };
 

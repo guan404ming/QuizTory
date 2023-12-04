@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/use-toast";
 import useAdmin from "@/hooks/useAdmin";
 
 export default function CourseBlock() {
@@ -37,7 +38,7 @@ export default function CourseBlock() {
       const reader = new FileReader();
       reader.readAsText(file);
 
-      reader.onload = (e: ProgressEvent<FileReader>) => {
+      reader.onload = async (e: ProgressEvent<FileReader>) => {
         const rawCourses: {
           course_id: string;
           course_name: string;
@@ -54,7 +55,19 @@ export default function CourseBlock() {
           departmentName: rawCourse.department_name,
         }));
 
-        createCourse({ courses });
+        try {
+          await createCourse({ courses });
+          toast({
+            title: `Successfully created ${courses.length} courses 😻`,
+            description: "See it in the course page",
+          });
+        } catch (error) {
+          console.log(error);
+          toast({
+            title: "Something went wrong 😿",
+            description: `Error creating courses`,
+          });
+        }
       };
 
       reader.onerror = (e: ProgressEvent<FileReader>) => {

@@ -40,6 +40,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { toast } from "@/components/ui/use-toast";
 import useAdmin from "@/hooks/useAdmin";
 
 type FileBlockProps = {
@@ -69,10 +70,22 @@ export default function FileBlock({ fileData }: FileBlockProps) {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const file = fileData.find((file) => `${file.id}` === selectedFileId);
     if (!file) return;
-    setFileStatus({ fileId: file.id, status });
+    try {
+      await setFileStatus({ fileId: file.id, status });
+      toast({
+        title: `Successfully set ${file.id} to ${status} 😻`,
+        description: "See it in the homepage",
+      });
+    } catch (error) {
+      console.log(error);
+      toast({
+        title: "Something went wrong 😿",
+        description: `Error setting file status`,
+      });
+    }
   };
 
   return (

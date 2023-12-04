@@ -10,12 +10,10 @@ import {
   type StorageError,
 } from "firebase/storage";
 
-import { useToast } from "@/components/ui/use-toast";
 import { storage, auth } from "@/lib/storage";
 
 export default function useStorage() {
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
   const router = useRouter();
 
   const createFile = async ({
@@ -31,62 +29,53 @@ export default function useStorage() {
   }) => {
     if (loading) return;
 
-    signInAnonymously(auth)
-      .then(() => {
-        // User is signed in anonymously
-        const storageRef = ref(storage, `pdf/${file.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, file);
+    signInAnonymously(auth).then(() => {
+      // User is signed in anonymously
+      const storageRef = ref(storage, `pdf/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-        setLoading(true);
+      setLoading(true);
 
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            console.log(snapshot);
-          },
-          (error: StorageError) => {
-            console.error("Upload failed", error);
-          },
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then(
-              async (downloadURL: string) => {
-                try {
-                  const res = await fetch("/api/storage", {
-                    method: "POST",
-                    body: JSON.stringify({
-                      courseId,
-                      contentType,
-                      examType,
-                      downloadURL,
-                    }),
-                  });
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          console.log(snapshot);
+        },
+        (error: StorageError) => {
+          console.error("Upload failed", error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then(
+            async (downloadURL: string) => {
+              try {
+                const res = await fetch("/api/storage", {
+                  method: "POST",
+                  body: JSON.stringify({
+                    courseId,
+                    contentType,
+                    examType,
+                    downloadURL,
+                  }),
+                });
 
-                  console.log(res);
+                console.log(res);
 
-                  if (!res.ok) {
-                    const body = await res.json();
-                    throw new Error(body.error);
-                  }
-
-                  router.refresh();
-                  router.push("/");
-                  toast({
-                    title: "Successfully uploaded!",
-                    description: "Wait admin to approve it~",
-                  });
-                  setLoading(false);
-                } catch (error) {
-                  console.log(error);
+                if (!res.ok) {
+                  const body = await res.json();
+                  throw new Error(body.error);
                 }
-              },
-            );
-          },
-        );
-      })
-      .catch((error) => {
-        // Handle error
-        console.error(error.code, error.message);
-      });
+
+                router.refresh();
+                router.push("/");
+                setLoading(false);
+              } catch (error) {
+                console.log(error);
+              }
+            },
+          );
+        },
+      );
+    });
   };
 
   return {
