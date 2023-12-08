@@ -34,33 +34,36 @@ export async function POST(request: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) throw Error("No session!");
 
-    await db
-      .insert(instructorTable)
-      .values(
-        courses.map((course) => ({
-          name: course.instructorName,
-          departmentName: course.departmentName,
-        })),
-      )
-      .onConflictDoNothing()
-      .execute();
+    await db.transaction(async (tx) => {
+      // insert instructors
+      await tx
+        .insert(instructorTable)
+        .values(
+          courses.map((course) => ({
+            name: course.instructorName,
+            departmentName: course.departmentName,
+          })),
+        )
+        .onConflictDoNothing()
+        .execute();
 
-    const instructors = await db
-      .select({ id: instructorTable.id, name: instructorTable.name })
-      .from(instructorTable);
+      // insert courses
+      const instructors = await tx
+        .select({ id: instructorTable.id, name: instructorTable.name })
+        .from(instructorTable);
+      const instructorMap = new Map(instructors.map((i) => [i.name, i.id]));
 
-    const instructorMap = new Map(instructors.map((i) => [i.name, i.id]));
-
-    await db
-      .insert(courseTable)
-      .values(
-        courses.map((course) => ({
-          ...course,
-          instructorId: instructorMap.get(course.instructorName)!,
-        })),
-      )
-      .onConflictDoNothing()
-      .execute();
+      await tx
+        .insert(courseTable)
+        .values(
+          courses.map((course) => ({
+            ...course,
+            instructorId: instructorMap.get(course.instructorName)!,
+          })),
+        )
+        .onConflictDoNothing()
+        .execute();
+    });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

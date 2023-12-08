@@ -28,41 +28,43 @@ export async function POST(request: NextRequest) {
   const { changeeId, role } = data as ChangeUserRoleRequest;
 
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) throw Error("No session!");
+    await db.transaction(async (tx) => {
+      const session = await getServerSession(authOptions);
+      if (!session?.user?.email) throw Error("No session!");
 
-    const [changer] = await db
-      .select({
-        id: userTable.id,
-      })
-      .from(userTable)
-      .where(eq(userTable.email, session.user.email));
+      const [changer] = await tx
+        .select({
+          id: userTable.id,
+        })
+        .from(userTable)
+        .where(eq(userTable.email, session.user.email));
 
-    const [changee] = await db
-      .select({
-        id: userRoleTable.userId,
-        role: userRoleTable.role,
-      })
-      .from(userRoleTable)
-      .where(eq(userRoleTable.userId, changeeId));
+      const [changee] = await tx
+        .select({
+          id: userRoleTable.userId,
+          role: userRoleTable.role,
+        })
+        .from(userRoleTable)
+        .where(eq(userRoleTable.userId, changeeId));
 
-    await db
-      .insert(userRoleTable)
-      .values({ userId: changeeId, role })
-      .onConflictDoUpdate({
-        target: userRoleTable.userId,
-        set: { role },
-      });
+      await tx
+        .insert(userRoleTable)
+        .values({ userId: changeeId, role })
+        .onConflictDoUpdate({
+          target: userRoleTable.userId,
+          set: { role },
+        });
 
-    await db
-      .insert(roleChangedRecordTable)
-      .values({
-        from: changee?.role ?? "Normal",
-        to: role,
-        changeeId: changeeId,
-        changerId: changer.id,
-      })
-      .execute();
+      await tx
+        .insert(roleChangedRecordTable)
+        .values({
+          from: changee?.role ?? "Normal",
+          to: role,
+          changeeId: changeeId,
+          changerId: changer.id,
+        })
+        .execute();
+    });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

@@ -28,25 +28,30 @@ export async function POST(request: NextRequest) {
   const { fileId, status } = data as ChangeFileStatusRequest;
 
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) throw Error("No session!");
+    await db.transaction(async (tx) => {
+      const session = await getServerSession(authOptions);
+      if (!session?.user?.email) throw Error("No session!");
 
-    const [user] = await db
-      .select({
-        id: userTable.id,
-      })
-      .from(userTable)
-      .where(eq(userTable.email, session.user.email));
+      const [user] = await tx
+        .select({
+          id: userTable.id,
+        })
+        .from(userTable)
+        .where(eq(userTable.email, session.user.email));
 
-    await db.update(fileTable).set({ status }).where(eq(fileTable.id, fileId));
+      await tx
+        .update(fileTable)
+        .set({ status })
+        .where(eq(fileTable.id, fileId));
 
-    await db
-      .insert(settingTable)
-      .values({
-        userId: user.id,
-        type: status === "Private" ? "Set_private" : "Set_public",
-      })
-      .execute();
+      await tx
+        .insert(settingTable)
+        .values({
+          userId: user.id,
+          type: status === "Private" ? "Set_private" : "Set_public",
+        })
+        .execute();
+    });
   } catch (error) {
     console.log(error);
     return NextResponse.json(
