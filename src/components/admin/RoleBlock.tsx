@@ -55,7 +55,7 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
   const [open, setOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string>("");
   const [role, setRole] = useState<"Admin" | "Blocked" | "Normal">("Normal");
-  const { setUserRole } = useAdmin();
+  const { setUserRole, loading } = useAdmin();
 
   function getLabelById() {
     const changee = userData.find((user) => `${user.id}` === selectedUserId);
@@ -163,7 +163,11 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
         </div>
 
         <DialogFooter>
-          <Button className="round-xl" onClick={() => handleSubmit()}>
+          <Button
+            className="round-xl"
+            onClick={() => handleSubmit()}
+            disabled={loading}
+          >
             Submit
           </Button>
         </DialogFooter>

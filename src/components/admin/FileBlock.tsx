@@ -59,7 +59,7 @@ export default function FileBlock({ fileData }: FileBlockProps) {
   const [open, setOpen] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<string>("");
   const [status, setStatus] = useState<"Public" | "Private">("Private");
-  const { setFileStatus } = useAdmin();
+  const { setFileStatus, loading } = useAdmin();
 
   function getLabelById() {
     const file = fileData.find((file) => `${file.id}` === selectedFileId);
@@ -165,7 +165,11 @@ export default function FileBlock({ fileData }: FileBlockProps) {
         </div>
 
         <DialogFooter>
-          <Button className="round-xl" onClick={() => handleSubmit()}>
+          <Button
+            className="round-xl"
+            onClick={() => handleSubmit()}
+            disabled={loading}
+          >
             Submit
           </Button>
         </DialogFooter>

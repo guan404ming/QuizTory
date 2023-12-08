@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-export default function useStorage() {
+export default function useAdmin() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 

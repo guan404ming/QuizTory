@@ -25,7 +25,7 @@ import useAdmin from "@/hooks/useAdmin";
 
 export default function CourseBlock() {
   const [file, setFile] = useState<File | null>(null);
-  const { createCourse } = useAdmin();
+  const { createCourse, loading } = useAdmin();
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
@@ -103,7 +103,11 @@ export default function CourseBlock() {
         </div>
 
         <DialogFooter>
-          <Button className="round-xl" onClick={() => handleSubmit()}>
+          <Button
+            className="round-xl"
+            onClick={() => handleSubmit()}
+            disabled={loading}
+          >
             Submit
           </Button>
         </DialogFooter>
