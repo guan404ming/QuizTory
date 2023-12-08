@@ -3,9 +3,11 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 
+import { publicEnv } from "./env/public";
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  apiKey: publicEnv.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: "quiztory-f5e09.firebaseapp.com",
   projectId: "quiztory-f5e09",
   storageBucket: "quiztory-f5e09.appspot.com",

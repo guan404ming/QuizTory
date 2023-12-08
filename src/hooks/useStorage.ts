@@ -14,6 +14,7 @@ import { storage, auth } from "@/lib/storage";
 
 export default function useStorage() {
   const [loading, setLoading] = useState(false);
+  const [progress, setProgess] = useState(0);
   const router = useRouter();
 
   const createFile = async ({
@@ -39,13 +40,13 @@ export default function useStorage() {
       uploadTask.on(
         "state_changed",
         (snapshot) => {
-          console.log(snapshot);
+          setProgess((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
         },
         (error: StorageError) => {
           console.error("Upload failed", error);
         },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(
+        async () => {
+          await getDownloadURL(uploadTask.snapshot.ref).then(
             async (downloadURL: string) => {
               try {
                 const res = await fetch("/api/storage", {
@@ -65,8 +66,8 @@ export default function useStorage() {
                   throw new Error(body.error);
                 }
 
-                router.refresh();
                 router.push("/");
+                router.refresh();
                 setLoading(false);
               } catch (error) {
                 console.log(error);
@@ -80,6 +81,7 @@ export default function useStorage() {
 
   return {
     createFile,
+    progress,
     loading,
   };
 }

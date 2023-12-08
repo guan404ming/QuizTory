@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -73,7 +74,16 @@ type UploadCardProps = {
 };
 
 export function UploadCard({ courseData }: UploadCardProps) {
-  const { loading, createFile } = useStorage();
+  const { loading, createFile, progress } = useStorage();
+
+  useEffect(() => {
+    if (progress == 100) {
+      toast({
+        title: "Successfully uploaded 😻",
+        description: "Wait admin to approve it~",
+      });
+    }
+  }, [progress]);
 
   // form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -83,10 +93,6 @@ export function UploadCard({ courseData }: UploadCardProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await createFile({ ...values, courseId: parseInt(values.courseId) });
-      toast({
-        title: "Successfully uploaded 😻",
-        description: "Wait admin to approve it~",
-      });
     } catch (error) {
       console.log(error);
       toast({
