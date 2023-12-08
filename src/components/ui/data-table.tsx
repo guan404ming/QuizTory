@@ -56,7 +56,6 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    // onColumnFiltersChange: setColumnFilters,
     globalFilterFn: fuzzyFilter,
     onGlobalFilterChange: setGlobalFilter,
     state: {
@@ -71,10 +70,10 @@ export function DataTable<TData, TValue>({
           placeholder="Filter course..."
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(String(e.target.value))}
-          className="max-w-sm ml-5"
+          className="ml-5 max-w-sm"
         />
       </div>
-      <div className="rounded-md border m-5 mt-2">
+      <div className="m-5 mt-2 rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
