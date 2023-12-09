@@ -58,7 +58,7 @@ export default async function Home() {
 
   return (
     <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
-      <h1 className="bg-white px-5 py-2 text-xl font-bold">File</h1>
+      <h1 className="bg-white px-5 py-2 text-xl font-bold">🏠 &nbsp;Home</h1>
       <DataTable
         columns={fileColumns}
         data={fileData}

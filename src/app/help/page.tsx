@@ -8,7 +8,7 @@ import {
 export default async function HelpPage() {
   return (
     <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
-      <h1 className="bg-white px-5 py-2 text-xl font-bold">Help</h1>
+      <h1 className="bg-white px-5 py-2 text-xl font-bold">🙌 &nbsp;Help</h1>
       <p className="text-m bg-white px-5 py-2">
         Welcome to Quiztory! Your go-to destination for seamless exam file
         sharing. Whether you're here to upload valuable resources or download

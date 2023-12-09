@@ -105,7 +105,7 @@ export function UploadCard({ courseData }: UploadCardProps) {
   return (
     <Card className="w-[350px] drop-shadow-md">
       <CardHeader>
-        <CardTitle>Upload PDF</CardTitle>
+        <CardTitle>😻 &nbsp;Upload PDF</CardTitle>
         <CardDescription>Upload your PDF in one-click.</CardDescription>
       </CardHeader>
       <Form {...form}>
