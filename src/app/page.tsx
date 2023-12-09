@@ -19,7 +19,6 @@ export default async function Home() {
         name: session.user.name as string,
         email: session.user.email as string,
       })
-
       .onConflictDoUpdate({
         target: userTable.email,
         set: {

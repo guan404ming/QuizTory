@@ -1,11 +1,33 @@
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
+import { eq } from "drizzle-orm";
+
+import { db } from "@/db";
+import { userRoleTable, userTable } from "@/db/schema";
+
 import { privateEnv } from "./env/private";
 
 export const authOptions: NextAuthOptions = {
   // Secret for Next-auth, without this JWT encryption/decryption won't work
   secret: privateEnv.NEXTAUTH_SECRET,
+
+  callbacks: {
+    async session({ session }) {
+      const [user] = await db
+        .select({ role: userRoleTable.role })
+        .from(userTable)
+        .innerJoin(userRoleTable, eq(userRoleTable.userId, userTable.id))
+        .where(eq(userTable.email, session.user.email!))
+        .execute();
+
+      session.user.role = user.role;
+
+      return {
+        ...session,
+      };
+    },
+  },
 
   // Configure one or more authentication providers
   providers: [
