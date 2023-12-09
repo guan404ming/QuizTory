@@ -18,10 +18,10 @@ import {
 import useUserInfo from "@/hooks/useUserInfo";
 
 export default function AuthDialog() {
+  const { session } = useUserInfo();
   const [dialogOpen, setDialogOpen] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { session } = useUserInfo();
 
   useEffect(() => {
     const open = searchParams.get("open");
@@ -50,21 +50,45 @@ export default function AuthDialog() {
   };
 
   return (
-    <Dialog open={dialogOpen} onOpenChange={handleOpenChange}>
+    <Dialog
+      open={session?.user.role === "Blocked" || dialogOpen}
+      onOpenChange={handleOpenChange}
+    >
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Welcome to Quiztory!</DialogTitle>
-          <DialogDescription>Sign in to get all Quiztory~~</DialogDescription>
-        </DialogHeader>
+        {session?.user.role === "Blocked" ? (
+          <DialogHeader>
+            <DialogTitle>You are blocked 🙀</DialogTitle>
+            <DialogDescription>
+              Contact us to get more infomation
+            </DialogDescription>
+            <DialogFooter>
+              <Button
+                className="round-xl mt-4 w-full"
+                onClick={() => signOut()}
+              >
+                Sign Out
+              </Button>
+            </DialogFooter>
+          </DialogHeader>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>Welcome to Quiztory!</DialogTitle>
+              <DialogDescription>
+                Sign in to get all Quiztory~~
+              </DialogDescription>
+            </DialogHeader>
 
-        <DialogFooter>
-          <Button className="round-xl mr-5" onClick={() => signIn()}>
-            Sign In
-          </Button>
-          <Button className="round-xl" onClick={() => signOut()}>
-            Sign Out
-          </Button>
-        </DialogFooter>
+            <DialogFooter>
+              <Button className="round-xl mr-5" onClick={() => signIn()}>
+                Sign In
+              </Button>
+              <Button className="round-xl" onClick={() => signOut()}>
+                Sign Out
+              </Button>
+            </DialogFooter>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

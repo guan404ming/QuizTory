@@ -2,7 +2,10 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import useUserInfo from "./useUserInfo";
+
 export default function useAdmin() {
+  const { session } = useUserInfo();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -17,7 +20,9 @@ export default function useAdmin() {
       departmentName: string;
     }[];
   }) => {
-    if (loading) return;
+    if (loading || session?.user.role !== "Admin") {
+      throw new Error("Authentication Error");
+    }
 
     setLoading(true);
 
@@ -38,7 +43,9 @@ export default function useAdmin() {
   };
 
   const createAnnouncement = async ({ content }: { content: string }) => {
-    if (loading) return;
+    if (loading || session?.user.role !== "Admin") {
+      throw new Error("Authentication Error");
+    }
 
     setLoading(true);
 
@@ -66,7 +73,9 @@ export default function useAdmin() {
     fileId: number;
     status: "Private" | "Public";
   }) => {
-    if (loading) return;
+    if (loading || session?.user.role !== "Admin") {
+      throw new Error("Authentication Error");
+    }
 
     setLoading(true);
 
@@ -95,7 +104,9 @@ export default function useAdmin() {
     changeeId: number;
     role: "Admin" | "Blocked" | "Normal";
   }) => {
-    if (loading) return;
+    if (loading || session?.user.role !== "Admin") {
+      throw new Error("Authentication Error");
+    }
 
     setLoading(true);
 
