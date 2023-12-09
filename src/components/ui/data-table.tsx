@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { rankItem } from "@tanstack/match-sorter-utils";
 import {
   ColumnDef,
@@ -29,13 +31,16 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   placeholder: string;
+  link: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   placeholder,
+  link,
 }: DataTableProps<TData, TValue>) {
+  const router = useRouter();
   const [globalFilter, setGlobalFilter] = useState("");
 
   const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
@@ -96,10 +101,14 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row, idx) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className={cn(link && "cursor-pointer")}
+                  onClick={() =>
+                    link && router.push(`/file/${(data[idx] as any).id}`)
+                  }
                 >
                   {row.getVisibleCells().map((cell, idx) => (
                     <TableCell

@@ -50,6 +50,7 @@ export default async function Home() {
     })
     .from(fileTable)
     .innerJoin(courseTable, eq(fileTable.courseId, courseTable.id))
+    .where(eq(fileTable.status, "Public"))
     .execute();
 
   if (!fileData) {
@@ -60,6 +61,7 @@ export default async function Home() {
     <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
       <h1 className="bg-white px-5 py-2 text-xl font-bold">🏠 &nbsp;Home</h1>
       <DataTable
+        link
         columns={fileColumns}
         data={fileData}
         placeholder="Filter file  -=≡Σ((( つ•̀ω•́ )つ"

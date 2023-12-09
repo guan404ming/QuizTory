@@ -32,6 +32,7 @@ export default async function CoursePage() {
     <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
       <h1 className="bg-white px-5 py-2 text-xl font-bold">📖 &nbsp;Course</h1>
       <DataTable
+        link={false}
         columns={courseColumns}
         data={courseData}
         placeholder="Filter course  -=≡Σ((( つ•̀ω•́ )つ"

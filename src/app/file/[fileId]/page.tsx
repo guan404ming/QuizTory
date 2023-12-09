@@ -20,7 +20,7 @@ export default async function FilePage({
   params,
 }: {
   params: {
-    fileId: string;
+    fileId: number;
   };
 }) {
   const { fileId } = params;
@@ -42,9 +42,7 @@ export default async function FilePage({
       instructorTable,
       eq(instructorTable.id, courseTable.instructorId),
     )
-    .where(
-      and(eq(fileTable.id, parseInt(fileId)), eq(fileTable.status, "Public")),
-    )
+    .where(and(eq(fileTable.id, fileId), eq(fileTable.status, "Public")))
     .execute();
 
   if (!file) {
@@ -60,6 +58,7 @@ export default async function FilePage({
     })
     .from(commentTable)
     .innerJoin(userTable, eq(commentTable.userId, userTable.id))
+    .where(eq(commentTable.fileId, fileId))
     .orderBy(desc(commentTable.createdAt))
     .limit(100)
     .execute();
