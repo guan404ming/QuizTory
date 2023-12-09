@@ -1,14 +1,18 @@
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 
-import { BookOpen, Home, UploadCloud, HelpCircle } from "lucide-react";
+import { BookOpen, Home, UploadCloud, HelpCircle, UserCog } from "lucide-react";
 
 import quiztory from "@/assets/quiztory.png";
+import { authOptions } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
 import ProfileButton from "./ProfileButton";
 
-export default function Header() {
+export default async function Header() {
+  const session = await getServerSession(authOptions);
+
   return (
     // aside is a semantic html tag for side content
     <aside className="flex h-screen flex-col justify-between px-6 py-6">
@@ -21,6 +25,9 @@ export default function Header() {
         <HeaderButton Icon={Home} text="Home" router="/" />
         <HeaderButton Icon={BookOpen} text="Course" router="/course" />
         <HeaderButton Icon={UploadCloud} text="Upload" router="/upload" />
+        {session?.user.role === "Admin" && (
+          <HeaderButton Icon={UserCog} text="Admin" router="/admin" />
+        )}
         <HeaderButton Icon={HelpCircle} text="Help" router="/help" />
       </div>
       <ProfileButton />
