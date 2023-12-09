@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 
+import AnnouncementList from "@/components/AnnouncementList";
 import Header from "@/components/Header";
 import { Separator } from "@/components/ui/separator";
 import { Toaster } from "@/components/ui/toaster";
 import NextAuthProvider from "@/context/NextAuthProvider";
+import { cn } from "@/lib/utils";
 
 import "./globals.css";
-import AnnouncementList from "@/components/AnnouncementList";
 
 const noto = Noto_Sans({
   subsets: ["latin-ext"],
@@ -29,7 +30,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <NextAuthProvider>
-        <body className={noto.className}>
+        <body className={cn(noto.className, "overflow-hidden")}>
           <div className="mx-auto flex max-w-6xl">
             <Header />
             <main className="flex min-h-screen w-full">

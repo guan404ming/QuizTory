@@ -3,10 +3,8 @@ import { User } from "lucide-react";
 
 import TimeText from "@/components/Timetext";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-
 import { db } from "@/db";
 import { announcementTable, userTable } from "@/db/schema";
-
 
 export default async function AnnouncementList() {
   const announcementData = await db
