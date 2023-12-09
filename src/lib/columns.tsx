@@ -14,11 +14,11 @@ export const fileColumns: ColumnDef<{
 }>[] = [
   {
     accessorKey: "courseNumber",
-    header: "Course Number",
+    header: "Number",
   },
   {
     accessorKey: "courseName",
-    header: "Course Name",
+    header: "Name",
   },
   {
     accessorKey: "examType",

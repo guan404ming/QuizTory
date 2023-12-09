@@ -4,10 +4,11 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
 import AuthDialog from "@/components/AuthDialog";
-import FileTable from "@/components/FileTable";
+import { DataTable } from "@/components/ui/data-table";
 import { db } from "@/db";
 import { courseTable, fileTable, userRoleTable, userTable } from "@/db/schema";
 import { authOptions } from "@/lib/auth";
+import { fileColumns } from "@/lib/columns";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -57,7 +58,12 @@ export default async function Home() {
 
   return (
     <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
-      <FileTable></FileTable>
+      <h1 className="bg-white px-5 py-2 text-xl font-bold">File</h1>
+      <DataTable
+        columns={fileColumns}
+        data={fileData}
+        placeholder="Filter file  -=≡Σ((( つ•̀ω•́ )つ"
+      />
       <AuthDialog />
     </div>
   );

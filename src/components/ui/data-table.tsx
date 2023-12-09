@@ -5,7 +5,6 @@ import { useState } from "react";
 import { rankItem } from "@tanstack/match-sorter-utils";
 import {
   ColumnDef,
-  ColumnFiltersState,
   FilterFn,
   flexRender,
   getCoreRowModel,
@@ -29,11 +28,13 @@ import { cn } from "@/lib/utils";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  placeholder: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  placeholder,
 }: DataTableProps<TData, TValue>) {
   const [globalFilter, setGlobalFilter] = useState("");
 
@@ -67,7 +68,7 @@ export function DataTable<TData, TValue>({
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter course..."
+          placeholder={placeholder}
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(String(e.target.value))}
           className="ml-5 max-w-sm"

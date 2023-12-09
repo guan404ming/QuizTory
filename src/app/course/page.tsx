@@ -7,8 +7,6 @@ import { db } from "@/db";
 import { courseTable, instructorTable } from "@/db/schema";
 import { courseColumns } from "@/lib/columns";
 
-// type CoursePageProps = {};
-
 export default async function CoursePage() {
   const courseData = await db
     .select({
@@ -33,7 +31,11 @@ export default async function CoursePage() {
   return (
     <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
       <h1 className="bg-white px-5 py-2 text-xl font-bold">Course</h1>
-      <DataTable columns={courseColumns} data={courseData} />
+      <DataTable
+        columns={courseColumns}
+        data={courseData}
+        placeholder="Filter course  -=≡Σ((( つ•̀ω•́ )つ"
+      />
     </div>
   );
 }
