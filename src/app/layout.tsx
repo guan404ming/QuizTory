@@ -53,10 +53,11 @@ export default async function RootLayout({
             <Header />
             <main className="flex min-h-screen w-full">
               <Separator orientation="vertical" />
-              {children}
+              <div className="mt-5 w-full">{children}</div>
+
               <Separator orientation="vertical" />
-              <div>
-                <h1 className="flex items-center space-x-2 bg-white px-4 py-4 text-lg font-semibold">
+              <div className="mt-3">
+                <h1 className="flex items-center space-x-2 bg-white px-4 py-4 pt-5 text-lg font-semibold">
                   <p>Announcement</p>
                 </h1>
                 <div className="px-4">

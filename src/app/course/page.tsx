@@ -32,7 +32,7 @@ export default async function CoursePage() {
 
   return (
     <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
-      <h1 className="bg-white px-4 py-4 text-xl font-bold">Course</h1>
+      <h1 className="bg-white px-5 py-2 text-xl font-bold">Course</h1>
       <DataTable columns={courseColumns} data={courseData} />
     </div>
   );

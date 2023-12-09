@@ -22,7 +22,7 @@ export default async function FileTable() {
 
   return (
     <>
-      <h1 className="bg-white px-4 py-4 text-xl font-bold">Files</h1>
+      <h1 className="bg-white px-5 py-2 text-xl font-bold">Files</h1>
       <DataTable columns={fileColumns} data={fileData} />
     </>
   );

@@ -7,9 +7,9 @@ import {
 
 export default async function HelpPage() {
   return (
-    <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll bg-white px-4 py-4 pt-2">
-      <h1 className="bg-white px-4 py-4 text-xl font-bold">Help</h1>
-      <p className="text-m bg-white px-4 py-4">
+    <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
+      <h1 className="bg-white px-5 py-2 text-xl font-bold">Help</h1>
+      <p className="text-m bg-white px-5 py-2">
         Welcome to Quiztory! Your go-to destination for seamless exam file
         sharing. Whether you're here to upload valuable resources or download
         essential materials, we're here to make your academic journey smoother.
@@ -18,16 +18,12 @@ export default async function HelpPage() {
         us.
       </p>
 
-      <div className="bg-white px-4">
+      <div className="bg-white px-5">
         <h2 className="font-heading text-l mt-12 scroll-m-20 border-b-2 py-4 font-semibold tracking-tight first:mt-0">
           FAQ
         </h2>
       </div>
-      <Accordion
-        type="single"
-        collapsible
-        className="text-m bg-white px-4 py-4"
-      >
+      <Accordion type="single" collapsible className="text-m bg-white p-5 pt-2">
         <AccordionItem value="item-1">
           <AccordionTrigger>How to upload files?</AccordionTrigger>
           <AccordionContent>
