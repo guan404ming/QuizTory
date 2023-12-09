@@ -1,12 +1,11 @@
-import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 
+import { getAdminServerSession } from "../utils";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@/db";
 import { roleChangedRecordTable, userRoleTable, userTable } from "@/db/schema";
-import { authOptions } from "@/lib/auth";
 
 const changeUserRoleRequestSchema = z.object({
   changeeId: z.number(),
@@ -29,15 +28,14 @@ export async function POST(request: NextRequest) {
 
   try {
     await db.transaction(async (tx) => {
-      const session = await getServerSession(authOptions);
-      if (!session?.user?.email) throw Error("No session!");
+      const session = await getAdminServerSession();
 
       const [changer] = await tx
         .select({
           id: userTable.id,
         })
         .from(userTable)
-        .where(eq(userTable.email, session.user.email));
+        .where(eq(userTable.email, session.user.email!));
 
       const [changee] = await tx
         .select({

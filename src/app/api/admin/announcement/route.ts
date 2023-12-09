@@ -1,12 +1,11 @@
-import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 
+import { getAdminServerSession } from "../utils";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "@/db";
 import { announcementTable, userTable } from "@/db/schema";
-import { authOptions } from "@/lib/auth";
 
 const createAnnouncementRequestSchema = z.object({
   content: z.string(),
@@ -29,15 +28,14 @@ export async function POST(request: NextRequest) {
   const { content } = data as CreateAnnouncementRequest;
 
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) throw Error("No session!");
+    const session = await getAdminServerSession();
 
     const [user] = await db
       .select({
         id: userTable.id,
       })
       .from(userTable)
-      .where(eq(userTable.email, session.user.email));
+      .where(eq(userTable.email, session.user.email!));
 
     await db
       .insert(announcementTable)

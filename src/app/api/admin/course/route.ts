@@ -1,11 +1,10 @@
-import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 
+import { getAdminServerSession } from "../utils";
 import { z } from "zod";
 
 import { db } from "@/db";
 import { courseTable, instructorTable } from "@/db/schema";
-import { authOptions } from "@/lib/auth";
 
 const uploadCourseRequestSchema = z
   .object({
@@ -31,8 +30,7 @@ export async function POST(request: NextRequest) {
   const courses = data as UploadCourseRequest;
 
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.email) throw Error("No session!");
+    await getAdminServerSession();
 
     await db.transaction(async (tx) => {
       // insert instructors
