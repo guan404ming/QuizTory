@@ -87,7 +87,7 @@ export default function CourseBlock() {
           <CardContent></CardContent>
         </Card>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Upload Courses</DialogTitle>
           <DialogDescription>upload courses json</DialogDescription>

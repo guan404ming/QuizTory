@@ -54,7 +54,7 @@ export default function AuthDialog() {
       open={session?.user.role === "Blocked" || dialogOpen}
       onOpenChange={handleOpenChange}
     >
-      <DialogContent className="max-w-[300px] sm:max-w-[425px]">
+      <DialogContent>
         {session?.user.role === "Blocked" ? (
           <DialogHeader>
             <DialogTitle>You are blocked 🙀</DialogTitle>

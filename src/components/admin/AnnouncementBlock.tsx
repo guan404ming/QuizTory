@@ -56,7 +56,7 @@ export default function AnnouncementBlock() {
           <CardContent></CardContent>
         </Card>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Create announcement</DialogTitle>
           <DialogDescription>enter the content</DialogDescription>

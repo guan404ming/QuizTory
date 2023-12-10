@@ -50,7 +50,7 @@ export default function CommentBlock() {
       <DialogTrigger className="text-left">
         <MessageCircleIcon></MessageCircleIcon>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Create comment</DialogTitle>
           <DialogDescription>enter the content</DialogDescription>
