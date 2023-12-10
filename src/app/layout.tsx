@@ -6,7 +6,6 @@ import Header from "@/components/Header";
 import { Separator } from "@/components/ui/separator";
 import { Toaster } from "@/components/ui/toaster";
 import NextAuthProvider from "@/context/NextAuthProvider";
-import { cn } from "@/lib/utils";
 
 import "./globals.css";
 
@@ -28,12 +27,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="overflow-hidden">
       <NextAuthProvider>
-        <body className={cn(noto.className, "overflow-hidden")}>
+        <body className={noto.className}>
           <div className="mx-auto flex max-w-6xl">
             <Header />
-            <main className="flex min-h-screen w-full">
+            <main className="flex max-h-screen w-full overflow-hidden">
               <Separator orientation="vertical" />
               <div className="mt-5 w-full">{children}</div>
 

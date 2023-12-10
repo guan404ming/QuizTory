@@ -119,13 +119,13 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
               className="z-10 w-[375px] p-0 drop-shadow-lg"
               align="start"
             >
-              <Command>
+              <Command className="max-h-[300px] overflow-scroll">
                 <CommandInput placeholder="Search user..." />
                 <CommandEmpty>No user found.</CommandEmpty>
                 {userData.map((user) => (
                   <CommandItem
                     key={user.id}
-                    className="px-4"
+                    className="px-4 py-2"
                     value={JSON.stringify(user)}
                     onSelect={(currentValue) => {
                       setSelectedUserId(

@@ -15,7 +15,7 @@ export default async function Header() {
 
   return (
     // aside is a semantic html tag for side content
-    <aside className="flex h-screen flex-col justify-between px-6 py-6">
+    <aside className="flex h-screen flex-col justify-between px-6 py-6 max-md:px-4 max-sm:px-2">
       <div className="flex flex-col gap-2">
         <div className="p-2">
           <Link href="/">

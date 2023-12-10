@@ -54,7 +54,7 @@ export default function AuthDialog() {
       open={session?.user.role === "Blocked" || dialogOpen}
       onOpenChange={handleOpenChange}
     >
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="max-w-[300px] sm:max-w-[425px]">
         {session?.user.role === "Blocked" ? (
           <DialogHeader>
             <DialogTitle>You are blocked 🙀</DialogTitle>
@@ -80,7 +80,7 @@ export default function AuthDialog() {
             </DialogHeader>
 
             <DialogFooter>
-              <Button className="round-xl mr-5" onClick={() => signIn()}>
+              <Button className="round-xl" onClick={() => signIn()}>
                 Sign In
               </Button>
               <Button className="round-xl" onClick={() => signOut()}>

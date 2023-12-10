@@ -70,13 +70,13 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div>
+    <div className="max-h-4/5 overflow-scroll">
       <div className="flex items-center py-4">
         <Input
           placeholder={placeholder}
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(String(e.target.value))}
-          className="ml-5 max-w-sm"
+          className="mx-5 max-w-sm"
         />
       </div>
       <div className="m-5 mt-2 rounded-md border">

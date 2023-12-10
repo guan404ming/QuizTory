@@ -124,13 +124,13 @@ export default function FileBlock({ fileData }: FileBlockProps) {
               className="z-10 w-[375px] p-0 drop-shadow-lg"
               align="start"
             >
-              <Command>
+              <Command className="max-h-[300px] overflow-scroll">
                 <CommandInput placeholder="Search file..." />
                 <CommandEmpty>No file found.</CommandEmpty>
                 {fileData.map((file) => (
                   <CommandItem
                     key={file.id}
-                    className="px-4"
+                    className="px-4 py-2"
                     value={JSON.stringify(file)}
                     onSelect={(currentValue) => {
                       setSelectedFileId(

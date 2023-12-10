@@ -21,7 +21,7 @@ export default async function AnnouncementList() {
     .execute();
 
   return (
-    <div className="mt-3">
+    <div className="mt-3 max-md:hidden">
       <h1 className="flex items-center space-x-2 bg-white px-4 py-4 pt-5 text-lg font-semibold">
         <p>🔔 &nbsp;Announcement</p>
       </h1>
