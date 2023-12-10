@@ -74,14 +74,16 @@ export const activityRecordTable = pgTable(
   "ACTIVITY_RECORD",
   {
     id: serial("activity_id").primaryKey(),
-    type: varchar("activity_type", { length: 20 }).notNull(),
+    type: varchar("activity_type", {
+      enum: ["SIGN_IN", "SIGN_OUT"],
+    }).notNull(),
     createdAt: timestamp("created_at").default(sql`now()`),
-    user_id: serial("user_id")
+    userId: serial("user_id")
       .notNull()
       .references(() => userTable.id, { onDelete: "cascade" }),
   },
   (table) => ({
-    userIdIndex: index("user_id_index").on(table.user_id),
+    userIdIndex: index("user_id_index").on(table.userId),
   }),
 );
 
