@@ -1,18 +1,28 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
+import { eq } from "drizzle-orm";
+
 import AnnouncementBlock from "@/components/admin/AnnouncementBlock";
 import CourseBlock from "@/components/admin/CourseBlock";
 import FileBlock from "@/components/admin/FileBlock";
 import RoleBlock from "@/components/admin/RoleBlock";
 import { db } from "@/db";
-import { fileTable, userTable } from "@/db/schema";
+import { fileTable, userRoleTable, userTable } from "@/db/schema";
 import { authOptions } from "@/lib/auth";
 
 export default async function AdminPage() {
   const session = await getServerSession(authOptions);
   const fileData = await db.select().from(fileTable);
-  const userData = await db.select().from(userTable);
+  const userData = await db
+    .select({
+      id: userTable.id,
+      name: userTable.name,
+      email: userTable.email,
+      role: userRoleTable.role,
+    })
+    .from(userTable)
+    .innerJoin(userRoleTable, eq(userRoleTable.userId, userTable.id));
 
   if (session?.user.role !== "Admin") {
     redirect("/");
@@ -21,7 +31,7 @@ export default async function AdminPage() {
   return (
     <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
       <h1 className="bg-white px-5 py-2 text-xl font-bold">🧑🏼‍💻 &nbsp;Admin</h1>
-      <div className="mt-2 grid grid-cols-2 gap-4 px-5">
+      <div className="mt-2 grid grid-cols-2 gap-4 px-5 max-sm:grid-cols-1">
         <AnnouncementBlock />
         <CourseBlock />
         <FileBlock fileData={fileData} />

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Badge } from "../ui/badge";
 import {
   Select,
   SelectContent,
@@ -64,7 +65,14 @@ export default function FileBlock({ fileData }: FileBlockProps) {
   function getLabelById() {
     const file = fileData.find((file) => `${file.id}` === selectedFileId);
     if (file) {
-      return `${file.courseId} - ${file.examType} - ${file.contentType} - (user-${file.userId})`;
+      return (
+        <div className="flex">
+          <Badge className="mr-2 flex w-[70px] flex-col max-sm:hidden">
+            {file.status}
+          </Badge>
+          <p className="truncate">{`${file.courseId} - ${file.examType} - ${file.contentType}`}</p>
+        </div>
+      );
     } else {
       return "File not found!";
     }
@@ -99,7 +107,7 @@ export default function FileBlock({ fileData }: FileBlockProps) {
           <CardContent></CardContent>
         </Card>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Toggle file status</DialogTitle>
           <DialogDescription>upload courses json</DialogDescription>
@@ -121,7 +129,7 @@ export default function FileBlock({ fileData }: FileBlockProps) {
               </Button>
             </PopoverTrigger>
             <PopoverContent
-              className="z-10 w-[375px] p-0 drop-shadow-lg"
+              className="z-10 w-[375px] p-0 drop-shadow-lg max-sm:w-[250px]"
               align="start"
             >
               <Command className="max-h-[300px] overflow-scroll">
@@ -140,7 +148,12 @@ export default function FileBlock({ fileData }: FileBlockProps) {
                       setOpen(false);
                     }}
                   >
-                    {`${file.courseId} - ${file.examType} - ${file.contentType} - (user-${file.userId})`}
+                    <div className="flex">
+                      <Badge className="mr-2 flex w-[70px] flex-col max-sm:hidden">
+                        {file.status}
+                      </Badge>
+                      <p className="truncate">{`${file.courseId} - ${file.examType} - ${file.contentType}`}</p>
+                    </div>
                   </CommandItem>
                 ))}
               </Command>
@@ -152,7 +165,7 @@ export default function FileBlock({ fileData }: FileBlockProps) {
           <Select
             onValueChange={(value: "Private" | "Public") => setStatus(value)}
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger>
               <SelectValue placeholder="Select a Status" />
             </SelectTrigger>
             <SelectContent>
@@ -166,7 +179,7 @@ export default function FileBlock({ fileData }: FileBlockProps) {
 
         <DialogFooter>
           <Button
-            className="round-xl"
+            className="round-xl mt-2"
             onClick={() => handleSubmit()}
             disabled={loading}
           >

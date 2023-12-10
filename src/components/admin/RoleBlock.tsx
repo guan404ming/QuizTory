@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Badge } from "../ui/badge";
 import {
   Select,
   SelectContent,
@@ -48,6 +49,7 @@ type RoleBlockProps = {
     id: number;
     name: string;
     email: string;
+    role: "Admin" | "Blocked" | "Normal";
   }[];
 };
 
@@ -60,7 +62,14 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
   function getLabelById() {
     const changee = userData.find((user) => `${user.id}` === selectedUserId);
     if (changee) {
-      return `${changee.name} - ${changee.email}`;
+      return (
+        <div className="flex">
+          <Badge className="mr-2 flex w-[70px] flex-col max-sm:hidden">
+            {changee.role}
+          </Badge>
+          <p className="truncate">{`${changee.email}`}</p>
+        </div>
+      );
     } else {
       return "User not found!";
     }
@@ -94,7 +103,7 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
           <CardContent></CardContent>
         </Card>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Toggle user role</DialogTitle>
           <DialogDescription>select and toggle</DialogDescription>
@@ -116,7 +125,7 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
               </Button>
             </PopoverTrigger>
             <PopoverContent
-              className="z-10 w-[375px] p-0 drop-shadow-lg"
+              className="z-10 w-[375px] p-0 drop-shadow-lg max-sm:w-[250px]"
               align="start"
             >
               <Command className="max-h-[300px] overflow-scroll">
@@ -134,7 +143,12 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
                       setOpen(false);
                     }}
                   >
-                    {`${user.name} - ${user.email}`}
+                    <div className="flex">
+                      <Badge className="mr-2 flex w-[70px] flex-col max-sm:hidden">
+                        {user.role}
+                      </Badge>
+                      <p className="truncate">{`${user.email}`}</p>
+                    </div>
                   </CommandItem>
                 ))}
               </Command>
@@ -149,7 +163,7 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
               setRole(value)
             }
           >
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger>
               <SelectValue placeholder="Select a Role" />
             </SelectTrigger>
             <SelectContent>
@@ -164,7 +178,7 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
 
         <DialogFooter>
           <Button
-            className="round-xl"
+            className="round-xl mt-2"
             onClick={() => handleSubmit()}
             disabled={loading}
           >
