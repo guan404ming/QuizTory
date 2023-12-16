@@ -77,7 +77,9 @@ export const activityRecordTable = pgTable(
     type: varchar("activity_type", {
       enum: ["SIGN_IN", "SIGN_OUT"],
     }).notNull(),
-    createdAt: timestamp("created_at").default(sql`now()`),
+    createdAt: timestamp("created_at")
+      .default(sql`now()`)
+      .notNull(),
     userId: serial("user_id")
       .notNull()
       .references(() => userTable.id, { onDelete: "cascade" }),

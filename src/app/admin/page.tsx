@@ -3,12 +3,19 @@ import { redirect } from "next/navigation";
 
 import { eq } from "drizzle-orm";
 
+import { Overview } from "@/components/Overview";
 import AnnouncementBlock from "@/components/admin/AnnouncementBlock";
 import CourseBlock from "@/components/admin/CourseBlock";
 import FileBlock from "@/components/admin/FileBlock";
 import RoleBlock from "@/components/admin/RoleBlock";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { db } from "@/db";
-import { fileTable, userRoleTable, userTable } from "@/db/schema";
+import {
+  activityRecordTable,
+  fileTable,
+  userRoleTable,
+  userTable,
+} from "@/db/schema";
 import { authOptions } from "@/lib/auth";
 
 export default async function AdminPage() {
@@ -27,11 +34,20 @@ export default async function AdminPage() {
   if (session?.user.role !== "Admin") {
     redirect("/");
   }
+  const activityList = await db.select().from(activityRecordTable);
 
   return (
-    <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
-      <h1 className="bg-white px-5 py-2 text-xl font-bold">🧑🏼‍💻 &nbsp;Admin</h1>
-      <div className="mt-2 grid grid-cols-2 gap-4 px-5 max-sm:grid-cols-1">
+    <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll px-5 pt-2">
+      <h1 className="bg-white py-2 text-xl font-bold">🧑🏼‍💻 &nbsp;Admin</h1>
+      <Card className="mb-4">
+        <CardHeader>
+          <CardTitle>Activity Overview</CardTitle>
+        </CardHeader>
+        <CardContent className="pl-2">
+          <Overview messageList={activityList} />
+        </CardContent>
+      </Card>
+      <div className="mt-2 grid grid-cols-2 gap-4 max-sm:grid-cols-1">
         <AnnouncementBlock />
         <CourseBlock />
         <FileBlock fileData={fileData} />
