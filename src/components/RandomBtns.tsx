@@ -12,7 +12,7 @@ export default function RandomBtns() {
     try {
       await createRandomUser();
       toast({
-        title: "Successfully created 10 random users 😻",
+        title: "Successfully created 500 random users 😻",
         description: "See it in the homepage",
       });
     } catch (error) {
