@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
 import { Overview } from "@/components/Overview";
+import RandomBtns from "@/components/RandomBtns";
 import AnnouncementBlock from "@/components/admin/AnnouncementBlock";
 import CourseBlock from "@/components/admin/CourseBlock";
 import FileBlock from "@/components/admin/FileBlock";
@@ -41,9 +42,18 @@ export default async function AdminPage() {
       <h1 className="bg-white py-2 text-xl font-bold">🧑🏼‍💻 &nbsp;Admin</h1>
       <Card className="mb-4">
         <CardHeader>
-          <CardTitle>Activity Overview</CardTitle>
+          <CardTitle>Random Data Generator</CardTitle>
         </CardHeader>
         <CardContent className="pl-2">
+          <RandomBtns></RandomBtns>
+        </CardContent>
+      </Card>
+
+      <Card className="mb-4">
+        <CardHeader>
+          <CardTitle>Activity Overview</CardTitle>
+        </CardHeader>
+        <CardContent className="-ml-4 pl-2">
           <Overview messageList={activityList} />
         </CardContent>
       </Card>

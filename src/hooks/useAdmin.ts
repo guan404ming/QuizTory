@@ -126,8 +126,31 @@ export default function useAdmin() {
     setLoading(false);
   };
 
+  const createRandomUser = async () => {
+    if (loading || session?.user.role !== "Admin") {
+      throw new Error("Authentication Error");
+    }
+
+    setLoading(true);
+
+    const res = await fetch("/api/admin/random", {
+      method: "GET",
+    });
+
+    console.log(res);
+
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.error);
+    }
+
+    router.refresh();
+    setLoading(false);
+  };
+
   return {
     createAnnouncement,
+    createRandomUser,
     setFileStatus,
     setUserRole,
     createCourse,

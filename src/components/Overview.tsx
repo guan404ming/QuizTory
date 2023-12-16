@@ -46,7 +46,7 @@ export function Overview({ messageList }: OverviewProps) {
   }
 
   return (
-    <ResponsiveContainer width="100%" height={250}>
+    <ResponsiveContainer width="100%" height={200}>
       <BarChart data={countMessagesByHour()}>
         <XAxis
           dataKey="name"
