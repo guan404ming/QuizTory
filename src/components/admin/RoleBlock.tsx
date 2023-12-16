@@ -31,6 +31,7 @@ import {
   CommandEmpty,
   CommandItem,
   Command,
+  CommandList,
 } from "@/components/ui/command";
 import {
   Dialog,
@@ -131,26 +132,28 @@ export default function RoleBlock({ userData }: RoleBlockProps) {
               <Command className="max-h-[300px] overflow-scroll">
                 <CommandInput placeholder="Search user..." />
                 <CommandEmpty>No user found.</CommandEmpty>
-                {userData.map((user) => (
-                  <CommandItem
-                    key={user.id}
-                    className="px-4 py-2"
-                    value={JSON.stringify(user)}
-                    onSelect={(currentValue) => {
-                      setSelectedUserId(
-                        currentValue === selectedUserId ? "" : `${user.id}`,
-                      );
-                      setOpen(false);
-                    }}
-                  >
-                    <div className="flex">
-                      <Badge className="mr-2 flex w-[70px] flex-col max-sm:hidden">
-                        {user.role}
-                      </Badge>
-                      <p className="truncate">{`${user.email}`}</p>
-                    </div>
-                  </CommandItem>
-                ))}
+                <CommandList>
+                  {userData.map((user) => (
+                    <CommandItem
+                      key={user.id}
+                      className="px-4 py-2"
+                      value={JSON.stringify(user)}
+                      onSelect={(currentValue) => {
+                        setSelectedUserId(
+                          currentValue === selectedUserId ? "" : `${user.id}`,
+                        );
+                        setOpen(false);
+                      }}
+                    >
+                      <div className="flex">
+                        <Badge className="mr-2 flex w-[70px] flex-col max-sm:hidden">
+                          {user.role}
+                        </Badge>
+                        <p className="truncate">{`${user.email}`}</p>
+                      </div>
+                    </CommandItem>
+                  ))}
+                </CommandList>
               </Command>
             </PopoverContent>
           </Popover>

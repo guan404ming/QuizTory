@@ -31,6 +31,7 @@ import {
   CommandEmpty,
   CommandItem,
   Command,
+  CommandList,
 } from "@/components/ui/command";
 import {
   Dialog,
@@ -135,27 +136,29 @@ export default function FileBlock({ fileData }: FileBlockProps) {
               <Command className="max-h-[300px] overflow-scroll">
                 <CommandInput placeholder="Search file..." />
                 <CommandEmpty>No file found.</CommandEmpty>
-                {fileData.map((file) => (
-                  <CommandItem
-                    key={file.id}
-                    className="px-4 py-2"
-                    value={JSON.stringify(file)}
-                    onSelect={(currentValue) => {
-                      setSelectedFileId(
-                        currentValue === selectedFileId ? "" : `${file.id}`,
-                      );
-                      setStatus(file.status);
-                      setOpen(false);
-                    }}
-                  >
-                    <div className="flex">
-                      <Badge className="mr-2 flex w-[70px] flex-col max-sm:hidden">
-                        {file.status}
-                      </Badge>
-                      <p className="truncate">{`${file.courseId} - ${file.examType} - ${file.contentType}`}</p>
-                    </div>
-                  </CommandItem>
-                ))}
+                <CommandList>
+                  {fileData.map((file) => (
+                    <CommandItem
+                      key={file.id}
+                      className="px-4 py-2"
+                      value={JSON.stringify(file)}
+                      onSelect={(currentValue) => {
+                        setSelectedFileId(
+                          currentValue === selectedFileId ? "" : `${file.id}`,
+                        );
+                        setStatus(file.status);
+                        setOpen(false);
+                      }}
+                    >
+                      <div className="flex">
+                        <Badge className="mr-2 flex w-[70px] flex-col max-sm:hidden">
+                          {file.status}
+                        </Badge>
+                        <p className="truncate">{`${file.courseId} - ${file.examType} - ${file.contentType}`}</p>
+                      </div>
+                    </CommandItem>
+                  ))}
+                </CommandList>
               </Command>
             </PopoverContent>
           </Popover>
