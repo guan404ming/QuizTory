@@ -107,7 +107,8 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                   className={cn(link && "cursor-pointer")}
                   onClick={() =>
-                    link && router.push(`/file/${(data[idx] as any).id}`)
+                    link &&
+                    router.push(`/file/${(data[parseInt(row.id)] as any).id}`)
                   }
                 >
                   {row.getVisibleCells().map((cell, idx) => (
