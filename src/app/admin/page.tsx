@@ -13,6 +13,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { db } from "@/db";
 import {
   activityRecordTable,
+  courseTable,
   fileTable,
   userRoleTable,
   userTable,
@@ -21,7 +22,18 @@ import { authOptions } from "@/lib/auth";
 
 export default async function AdminPage() {
   const session = await getServerSession(authOptions);
-  const fileData = await db.select().from(fileTable);
+  const fileData = await db
+    .select({
+      id: fileTable.id,
+      userId: fileTable.userId,
+      contentType: fileTable.contentType,
+      examType: fileTable.examType,
+      status: fileTable.status,
+      downloadURL: fileTable.downloadURL,
+      courseNumber: courseTable.number,
+    })
+    .from(fileTable)
+    .innerJoin(courseTable, eq(fileTable.courseId, courseTable.id));
   const userData = await db
     .select({
       id: userTable.id,

@@ -52,7 +52,7 @@ type FileBlockProps = {
     contentType: "Solution" | "Question" | "Q&S";
     examType: "Quiz" | "Midterm" | "Final";
     downloadURL: string | null;
-    courseId: number;
+    courseNumber: string;
     userId: number;
   }[];
 };
@@ -71,7 +71,7 @@ export default function FileBlock({ fileData }: FileBlockProps) {
           <Badge className="mr-2 flex w-[70px] flex-col max-sm:hidden">
             {file.status}
           </Badge>
-          <p className="truncate">{`${file.courseId} - ${file.examType} - ${file.contentType}`}</p>
+          <p className="truncate">{`${file.courseNumber} - ${file.examType} - ${file.contentType}`}</p>
         </div>
       );
     } else {
@@ -111,7 +111,7 @@ export default function FileBlock({ fileData }: FileBlockProps) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Toggle file status</DialogTitle>
-          <DialogDescription>upload courses json</DialogDescription>
+          <DialogDescription>click to toggle status</DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col">
@@ -154,7 +154,7 @@ export default function FileBlock({ fileData }: FileBlockProps) {
                         <Badge className="mr-2 flex w-[70px] flex-col max-sm:hidden">
                           {file.status}
                         </Badge>
-                        <p className="truncate">{`${file.courseId} - ${file.examType} - ${file.contentType}`}</p>
+                        <p className="truncate">{`${file.courseNumber} - ${file.examType} - ${file.contentType}`}</p>
                       </div>
                     </CommandItem>
                   ))}
