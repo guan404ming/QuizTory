@@ -4,6 +4,7 @@ import { eq, and, desc } from "drizzle-orm";
 import { User } from "lucide-react";
 
 import CommentBlock from "@/components/CommentBlock";
+import PageContainer from "@/components/PageContainer";
 import TimeText from "@/components/Timetext";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -64,10 +65,7 @@ export default async function FilePage({
     .execute();
 
   return (
-    <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
-      <h1 className="bg-white px-5 py-2 text-xl font-bold">
-        📁 &nbsp;{file.courseNumber} {file.courseName}
-      </h1>
+    <PageContainer emoji="📁" title={`${file.courseNumber} ${file.courseName}`}>
       <div className="flex space-x-3 px-5 py-2">
         <div className="flex space-x-2">
           <Badge>{file.semester}</Badge>
@@ -90,6 +88,6 @@ export default async function FilePage({
           </Alert>
         ))}
       </div>
-    </div>
+    </PageContainer>
   );
 }

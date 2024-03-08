@@ -34,8 +34,7 @@ export default async function RootLayout({
             <Header />
             <main className="flex max-h-screen w-full overflow-hidden">
               <Separator orientation="vertical" />
-              <div className="mt-5 w-full">{children}</div>
-
+              <div className="mt-4 w-full">{children}</div>
               <Separator orientation="vertical" />
               <AnnouncementList />
             </main>

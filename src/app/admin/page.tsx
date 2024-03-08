@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
 import { Overview } from "@/components/Overview";
+import PageContainer from "@/components/PageContainer";
 import AnnouncementBlock from "@/components/admin/AnnouncementBlock";
 import CourseBlock from "@/components/admin/CourseBlock";
 import FileBlock from "@/components/admin/FileBlock";
@@ -49,8 +50,7 @@ export default async function AdminPage() {
   const activityList = await db.select().from(activityRecordTable);
 
   return (
-    <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
-      <h1 className="bg-white px-5 py-2 text-xl font-bold">🧑🏼‍💻 &nbsp;Admin</h1>
+    <PageContainer emoji="🧑🏼‍💻" title="Admin">
       <Card className="mx-5 mt-2">
         <CardHeader>
           <CardTitle>Activity Overview</CardTitle>
@@ -65,6 +65,6 @@ export default async function AdminPage() {
         <FileBlock fileData={fileData} />
         <RoleBlock userData={userData} />
       </div>
-    </div>
+    </PageContainer>
   );
 }

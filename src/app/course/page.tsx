@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import { eq } from "drizzle-orm";
 
+import PageContainer from "@/components/PageContainer";
 import { DataTable } from "@/components/ui/data-table";
 import { db } from "@/db";
 import { courseTable, instructorTable } from "@/db/schema";
@@ -29,14 +30,13 @@ export default async function CoursePage() {
   }
 
   return (
-    <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
-      <h1 className="bg-white px-5 py-2 text-xl font-bold">📖 &nbsp;Course</h1>
+    <PageContainer emoji="📖" title="Course">
       <DataTable
         link={false}
         columns={courseColumns}
         data={courseData}
         placeholder="Filter course  -=≡Σ((( つ•̀ω•́ )つ"
       />
-    </div>
+    </PageContainer>
   );
 }
