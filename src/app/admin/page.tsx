@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
 import { Overview } from "@/components/Overview";
-import RandomBtns from "@/components/RandomBtns";
 import AnnouncementBlock from "@/components/admin/AnnouncementBlock";
 import CourseBlock from "@/components/admin/CourseBlock";
 import FileBlock from "@/components/admin/FileBlock";
@@ -50,18 +49,9 @@ export default async function AdminPage() {
   const activityList = await db.select().from(activityRecordTable);
 
   return (
-    <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll px-5 pt-2">
-      <h1 className="bg-white py-2 text-xl font-bold">🧑🏼‍💻 &nbsp;Admin</h1>
-      <Card className="mb-4">
-        <CardHeader>
-          <CardTitle>Random Data Generator</CardTitle>
-        </CardHeader>
-        <CardContent className="pl-2">
-          <RandomBtns></RandomBtns>
-        </CardContent>
-      </Card>
-
-      <Card className="mb-4">
+    <div className="flex h-screen w-full max-w-2xl flex-col overflow-scroll pt-2">
+      <h1 className="bg-white px-5 py-2 text-xl font-bold">🧑🏼‍💻 &nbsp;Admin</h1>
+      <Card className="mx-5 mt-2">
         <CardHeader>
           <CardTitle>Activity Overview</CardTitle>
         </CardHeader>
@@ -69,7 +59,7 @@ export default async function AdminPage() {
           <Overview messageList={activityList} />
         </CardContent>
       </Card>
-      <div className="mt-2 grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+      <div className="mx-5 mt-5 grid grid-cols-2 gap-4 max-sm:grid-cols-1">
         <AnnouncementBlock />
         <CourseBlock />
         <FileBlock fileData={fileData} />

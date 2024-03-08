@@ -71,7 +71,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="max-h-4/5 overflow-scroll">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-2">
         <Input
           placeholder={placeholder}
           value={globalFilter ?? ""}

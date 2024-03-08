@@ -11,7 +11,7 @@ export function DataTablePagination<TData>({
   table,
 }: DataTablePaginationProps<TData>) {
   return (
-    <div className="flex items-center justify-between p-4 px-5">
+    <div className="flex items-center justify-between p-2 px-5">
       <div className="text-muted-foreground flex-1 text-sm">
         Page {table.getState().pagination.pageIndex + 1} of{" "}
         {table.getPageCount()}
