@@ -1,51 +1,93 @@
-# Quiztory
+# Quiztory 📚
 
-## Running the app
+<p align="center">
+  <img width="375" alt="Quiztory Screenshot" src="public/screenshot.png">
+</p>
 
-1. Clone the repo
+- We have created a platform dedicated to sharing and downloading exam materials. On this website, users can:
 
-2. Install dependencies
+    **Upload exam materials** - Have extra exam materials? Share them here with those in need.
 
-```bash
-yarn install
-```
+    **Download exam materials** - Check available exam materials for your courses.
 
-3. Create a `.env.local` file in the root of the project and add a _valid_ Postgres URL. To get a Postgres URL, follow the instructions [here](https://ric2k1.notion.site/Free-postgresql-tutorial-f99605d5c5104acc99b9edf9ab649199?pvs=4).
+    **Manage course materials** - Administrators can manage courses and files to ensure quality and relevance.
 
-This is just an example, you should replace the URL with your own.
+- **Deployed link:** [Quiztory - Exam Material Sharing Platform](https://quiztory.vercel.app/)
 
-```bash
-POSTGRES_URL="postgres://postgres:postgres@localhost:5432/quiztory"
-```
+### 📚 Feature Introduction
 
-4. Run the migrations
+- **Users:**
+    - Google OAuth2.0 login
+    - Update personal profile
+    - User statistics (number of uploads / number of downloads)
+- **Files:**
+    - List all files and filter by type
+    - Display course and exam type for each file
+    - Support for uploading PDF files and adding descriptions
+    - Delete and edit files
+- **Courses:**
+    - Browse all courses
+    - View files for specific courses
+- **Administrators:**
+    - Manage courses and files
+    - Create announcements
+    - View user activity
+- **Interface:**
+    - Responsive design
+    - File preview
 
-```bash
-yarn migrate
-```
+### 📚 Frameworks / Modules / Third-Party Packages Used
 
-4. Start the app
+#### Frontend:
+- React.js, Next.js
+- UI components: shadcn-ui, lucide-react
+- Authentication: next-auth
+- File upload: @uploadthing/react
 
-```bash
-yarn dev
-```
+#### Backend:
+- Next.js API Routes
+- Database operations: drizzle-orm, drizzle-zod
+- Database: @vercel/postgres, pg
 
-## Managing the database
+#### Development Tools:
+- Code formatting and linting: eslint, prettier, @trivago/prettier-plugin-sort-imports, prettier-plugin-tailwindcss
+- Type checking: typescript
 
-`drizzle-kit` provides some useful commands to manage the database.
+### 📚 How to Install and Test on Localhost
 
-### Update database schema
+1. Clone this repository:
+   ```
+   git clone https://github.com/guan404ming/quiztory.git
+   cd quiztory
+   ```
 
-Note that if your schema changes, some data might be deleted in the process. `drizzle-kit` would prompt you about destructive changes.
+2. Install dependencies:
+   ```
+   yarn install
+   ```
 
-```bash
-yarn drizzle-kit push:pg
-```
+3. Set up environment variables:
+   - Copy the `.env.example` file to create a new `.env.local` file:
+     ```
+     cp .env.example .env.local
+     ```
+   - Open the `.env.local` file and fill in the necessary environment variables (e.g., database URL, API keys, etc.)
 
-### View or edit data
+4. Run the development server:
+   ```
+   yarn dev
+   ```
 
-This command launches a web UI to view or edit data in the database.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```bash
-yarn drizzle-kit studio
-```
+### 📚 Deployment
+
+This project is deployed using Vercel. Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+### 📚 Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+### 📚 License
+
+[MIT](https://choosealicense.com/licenses/mit/)
