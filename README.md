@@ -1,7 +1,7 @@
 # Quiztory 📚
 
 <p align="center">
-  <img width="375" alt="Quiztory Screenshot" src="public/screenshot.png">
+  <img width="1438" alt="Quiztory Screenshot" src="public/screenshot.png">
 </p>
 
 - We have created a platform dedicated to sharing and downloading exam materials. On this website, users can:
