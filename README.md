@@ -4,6 +4,7 @@
   <img width="1438" alt="Quiztory Screenshot" src="public/screenshot.png">
 </p>
 
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)![Postgres](https://img.shields.io/badge/PostgreSQL-3ECF8E?style=for-the-badge&logo=PostgreSQL&logoColor=white)![OAuth](https://img.shields.io/badge/OAuth-F6820D?style=for-the-badge&logo=google&logoColor=white)
 - We have created a platform dedicated to sharing and downloading exam materials. On this website, users can:
 
     **Upload exam materials** - Have extra exam materials? Share them here with those in need.
